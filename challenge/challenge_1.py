@@ -39,7 +39,10 @@ class GraphADT:
 		self.graph = self.extract(file_data)
 
 	def __repr__(self):
-		return str(self.graph)
+		return f'''
+TYPE: {self.graph['type']}
+NODES: {self.graph['nodes']}
+'''
 
 	def read_file(self, text_file_path):
 		'''
@@ -85,35 +88,47 @@ class GraphADT:
 			edge = edge.replace('(','')
 			edge = edge.replace(')','')
 			edge = edge.split(',')
+			# edge has no weight
 			if len(edge) == 2:
-				# edge has no weight
+				# node_id_a/_b are just string ids
 				node_id_a = str(edge[0])
 				node_id_b = str(edge[1])
+				# these are actual node objects
+				# print(graph['nodes'])
+				node_a = graph['nodes'][node_id_a]
+				node_b = graph['nodes'][node_id_b]
 				# add edge on both nodes
-				graph['nodes'][node_id_a].add_edge()
-				graph['nodes'][node_id_b].add_edge()
+				node_a.add_edge(node_id_b)
+				node_b.add_edge(node_id_a)
+			# edge is weighted
 			elif len(edge) == 3:
-				# edge is weighted
+				# node_id_a/_b are just string ids
 				node_id_a = str(edge[0])
 				node_id_b = str(edge[1])
-				weight = float(edge[2])
+				weight = int(edge[2])
+				# these are actual node objects
+				node_a = graph['nodes'][node_id_a]
+				node_b = graph['nodes'][node_id_b]
 				# add edge on both nodes
-				graph['nodes'][node_id_a].add_edge(weight)
-				graph['nodes'][node_id_b].add_edge(weight)
+				node_a.add_edge(node_id_b, weight)
+				node_b.add_edge(node_id_a, weight)
 			else:
 				# unexpected length
 				raise
-			edge_list[index] = edge
 
 		return graph
 
 class GraphNode:
 	'''
 	'''
-	def __init__(self, id):
-		pass
-	def add_edge(weight = None):
-		pass
+	def __init__(self, node_id):
+		self.edges = {}
+
+	def __repr__(self):
+		return f'\n  NODE -> {self.edges}\n\n'
+
+	def add_edge(self, node_id, weight = None):
+		self.edges[node_id] = weight
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
