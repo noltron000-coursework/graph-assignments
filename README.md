@@ -48,6 +48,7 @@ or [Challenge Rubric Document](https://docs.google.com/document/d/1mRnSLMeuHLODG
 
 **Input:** A graph file (can contain a directed or undirected graph with or without weights)
 `python3 challenge_1.py graph_data.txt`
+
 ```
 G
 1,2,3,4
@@ -70,7 +71,6 @@ Edge List:
 (1,4,5)
 (2,3,5)
 (2,4,7)
-
 ```
 
 
@@ -126,7 +126,7 @@ Depth First Search - Iterative
 - Dynamic Programming
 
 ### Stretch Challenges 6
-- - NP Reduction
+- NP Reduction
 
 > ## A Note About Style
-> pep8 will be mostly followed, however it is a personal convention to use consistently use tabs over spaces for indentation, and to use mulitple spaces exclusively for the alignment of code.
+> pep8 will be mostly followed, however it is a personal convention to use consistently use tabs over spaces for indentation, and to use multiple spaces exclusively for the alignment of code.
