@@ -49,6 +49,14 @@ Edge List:
 {edge_list}'''
 
 	def extract_edges(self):
+		if self.graph['type'] == 'graph':
+			return self.extract_edges_g()
+		elif self.graph['type'] == 'digraph':
+			return self.extract_edges_d()
+		else:
+			raise
+
+	def extract_edges_d(self):
 		final_string =''
 		for vertex in self.graph['nodes']:
 			i_key = vertex
@@ -63,6 +71,24 @@ Edge List:
 				else:
 					sub_string += f')\n'
 				final_string += sub_string
+		return final_string
+
+	def extract_edges_g(self):
+		final_string =''
+		for vertex in self.graph['nodes']:
+			i_key = vertex
+			i_val = self.graph['nodes'][vertex]
+			for neighbor in i_val.edges:
+				sub_string = f'({i_key},'
+				j_key = neighbor
+				if j_key > i_key:
+					j_val = i_val.edges[j_key]
+					sub_string += j_key
+					if j_val:
+						sub_string += f',{j_val})\n'
+					else:
+						sub_string += f')\n'
+					final_string += sub_string
 		return final_string
 
 	def read_file(self, text_file_path):
