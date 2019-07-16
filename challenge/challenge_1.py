@@ -39,10 +39,31 @@ class GraphADT:
 		self.graph = self.extract(file_data)
 
 	def __repr__(self):
+		vertices = len(self.graph['nodes'])
+		edge_list = self.extract_edges()
+		edge_len = len(edge_list.split('\n'))
 		return f'''
-TYPE: {self.graph['type']}
-NODES: {self.graph['nodes']}
-'''
+# Vertices: {vertices}
+# Edges: {edge_len}
+Edge List:
+{edge_list}'''
+
+	def extract_edges(self):
+		final_string =''
+		for vertex in self.graph['nodes']:
+			i_key = vertex
+			i_val = self.graph['nodes'][vertex]
+			for neighbor in i_val.edges:
+				sub_string = f'({i_key},'
+				j_key = neighbor
+				j_val = i_val.edges[j_key]
+				sub_string += j_key
+				if j_val:
+					sub_string += f',{j_val})\n'
+				else:
+					sub_string += f')\n'
+				final_string += sub_string
+		return final_string
 
 	def read_file(self, text_file_path):
 		'''
@@ -75,7 +96,7 @@ NODES: {self.graph['nodes']}
 		node_dict = {}
 		node_list = file_data[1].split(',')
 		for node_id in node_list:
-			node_dict[str(node_id)] = GraphNode(str(node_id))
+			node_dict[str(node_id)] = Vertex(str(node_id))
 		graph['nodes'] = node_dict
 
 		# populate nodes with edge data
@@ -118,7 +139,7 @@ NODES: {self.graph['nodes']}
 
 		return graph
 
-class GraphNode:
+class Vertex:
 	'''
 	'''
 	def __init__(self, node_id):
