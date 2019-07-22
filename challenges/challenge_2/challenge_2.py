@@ -94,13 +94,16 @@ class Graph:
 		# create visited set, and visit vertex A
 		visited = {A}
 		# create vertex queue, and start with vertex A
-		queue = [A] # HACK not a real queue
+		queue = [[A]] # HACK not a real queue
 
 		while queue != []:
 			# dequeue first vertex
 			# HACK change later for non-array
-			V = queue.pop()
-			print(V)
+			v_list = queue.pop()
+			V = v_list[-1]
+			print(v_list)
+			if V == B:
+				return v_list
 			# add its neighbors to the queue
 			for N in vertices[V].edges:
 				if N in visited:
@@ -109,7 +112,9 @@ class Graph:
 					# visit the vertex
 					visited.add(N)
 					# HACK change later for non-array
-					queue.insert(0, N)
+					n_list = v_list[:]
+					n_list.append(N)
+					queue.insert(0, n_list)
 
 
 
@@ -134,4 +139,4 @@ if __name__ == '__main__':
 	else:
 		raise
 	# print(test_graph)
-	test_graph.shortest_path_bfs('1','5')
+	test_graph.shortest_path_bfs('1','4')
