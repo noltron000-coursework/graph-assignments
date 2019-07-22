@@ -101,7 +101,6 @@ class Graph:
 			# HACK change later for non-array
 			v_list = queue.pop()
 			V = v_list[-1]
-			print(v_list)
 			if V == B:
 				return v_list
 			# add its neighbors to the queue
@@ -115,6 +114,7 @@ class Graph:
 					n_list = v_list[:]
 					n_list.append(N)
 					queue.insert(0, n_list)
+		return []
 
 
 
@@ -136,7 +136,22 @@ if __name__ == '__main__':
 		test_graph = Graph()
 	elif len(sys.argv) == 2:
 		test_graph = Graph(sys.argv[1])
+
+	elif len(sys.argv) == 3 or len(sys.argv) == 4:
+		if len(sys.argv) == 4:
+			test_graph = Graph(sys.argv[1])
+		else:
+			test_graph = Graph()
+
+		A = sys.argv[2]
+		B = sys.argv[3]
+		result_list = test_graph.shortest_path_bfs(A,B)
+		print(
+			'Vertices in shortest path: '
+			f'{",".join(result_list)}'
+			'\nNumber of edges in shortest path:'
+			f'{len(result_list) - 1}'
+		)
+
 	else:
 		raise
-	# print(test_graph)
-	test_graph.shortest_path_bfs('1','4')
