@@ -89,6 +89,7 @@ class Graph:
 		return text_data
 
 	def shortest_path_bfs(self, A, B):
+		# from A to B
 		# create hot-vars
 		vertices = self.graph['vertices']
 		# create visited set, and visit vertex A
@@ -99,20 +100,20 @@ class Graph:
 		while queue != []:
 			# dequeue first vertex
 			# HACK change later for non-array
-			v_list = queue.pop()
-			V = v_list[-1]
-			if V == B:
-				return v_list
+			a_list = queue.pop()
+			A = a_list[-1]
+			if A == B:
+				return a_list
 			# add its neighbors to the queue
-			for N in vertices[V].edges:
-				if N in visited:
+			for C in vertices[A].edges:
+				if C in visited:
 					pass
 				else:
 					# visit the vertex
-					visited.add(N)
+					visited.add(C)
 					# HACK change later for non-array
-					n_list = v_list[:]
-					n_list.append(N)
+					n_list = a_list[:]
+					n_list.append(C)
 					queue.insert(0, n_list)
 		return []
 
@@ -149,7 +150,7 @@ if __name__ == '__main__':
 		print(
 			'Vertices in shortest path: '
 			f'{",".join(result_list)}'
-			'\nNumber of edges in shortest path:'
+			'\nNumber of edges in shortest path: '
 			f'{len(result_list) - 1}'
 		)
 
