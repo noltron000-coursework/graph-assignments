@@ -42,11 +42,12 @@ class GraphADT:
 		vertices = len(self.graph['nodes'])
 		edge_list = self.extract_edges()
 		edge_len = len(edge_list.split('\n'))
-		return f'''
-# Vertices: {vertices}
-# Edges: {edge_len}
-Edge List:
-{edge_list}'''
+		return (
+			f'# Vertices: {vertices}\n'
+			f'# Edges: {edge_len}\n'
+			f'Edge List:\n'
+			f'{edge_list}\n'
+		)
 
 	def extract_edges(self):
 		if self.graph['type'] == 'graph':

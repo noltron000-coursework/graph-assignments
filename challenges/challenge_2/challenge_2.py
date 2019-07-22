@@ -5,7 +5,7 @@ import re
 
 class Graph:
 	''''''
-	def __init__(self, filepath = None):
+	def __init__(self, filepath=None):
 		''''''
 		if not filepath:
 			filepath = input('input the filepath to a graph: ')
@@ -77,15 +77,6 @@ class Graph:
 				raise
 		return graph
 
-	def extract_edges(self):
-		''''''
-		if self.graph['type'] == 'graph':
-			return self.extract_edges()
-		elif self.graph['type'] == 'digraph':
-			return self.extract_edges()
-		else:
-			raise
-
 	def read_file(self, text_file_path):
 		''''''
 		text_data = []
@@ -97,6 +88,29 @@ class Graph:
 			text_data[index] = entry.strip()
 		return text_data
 
+	def shortest_path_bfs(self, A, B):
+		# create hot-vars
+		vertices = self.graph['vertices']
+		# create visited set, and visit vertex A
+		visited = {A}
+		# create vertex queue, and start with vertex A
+		queue = [A] # HACK not a real queue
+
+		while queue != []:
+			# dequeue first vertex
+			# HACK change later for non-array
+			V = queue.pop()
+			print(V)
+			# add its neighbors to the queue
+			for N in vertices[V].edges:
+				if N in visited:
+					pass
+				else:
+					# visit the vertex
+					visited.add(N)
+					# HACK change later for non-array
+					queue.insert(0, N)
+
 
 
 class Vertex:
@@ -105,9 +119,9 @@ class Vertex:
 		self.edges = {}
 
 	def __repr__(self):
-		return str(self.edges)
+		return f'GRAPH {str(self.edges)}'
 
-	def add_edge(self, vertex_id, weight = None):
+	def add_edge(self, vertex_id, weight=None):
 		self.edges[vertex_id] = weight
 
 
@@ -119,4 +133,5 @@ if __name__ == '__main__':
 		test_graph = Graph(sys.argv[1])
 	else:
 		raise
-	print(test_graph)
+	# print(test_graph)
+	test_graph.shortest_path_bfs('1','5')
