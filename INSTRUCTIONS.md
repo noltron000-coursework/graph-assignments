@@ -1,6 +1,4 @@
-# CS-2-1 Graphs ([`source`](https://github.com/Make-School-Courses/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/Challenges/Challenges.md))
-
-# Challenges
+# Graphs Challenge ([`source`](https://github.com/Make-School-Courses/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/Challenges/Challenges.md))
 
 1. [General Instructions](#general-instructions)
 1. [Challenge 1](#challenge-1)
