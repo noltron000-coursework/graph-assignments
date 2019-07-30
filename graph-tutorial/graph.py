@@ -218,12 +218,16 @@ class Graph:
 				bad_set.add(bad[-1])
 		# good stuff
 		for good in good_degrees:
+			# cant have duplicates
 			if good[-1] in good_set:
 				pass
+			# okay its not a duplicate!
 			else:
 				good_set.add(good[-1])
+				# there's a faster path to this node
 				if good[-1] in bad_set:
 					pass
+				# this is a good node!
 				else:
 					good_final.append(good)
 		return good_final
