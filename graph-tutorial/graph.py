@@ -1,110 +1,200 @@
-#!python
+# python packages
+from vertex import Vertex
+# internal projects
+import sys
+import re
 
-class Vertex(object):
-	''' Vertex Class
-	A helper class for the Graph class that defines vertices and vertex
-	neighbors.
-	'''
-
-	def __init__(self, vertex_id):
-		'''Initialize a vertex and its neighbors.
-
-		neighbors: set of vertices adjacent to self,
-		stored in a dictionary with key = vertex,
-		value = weight of edge between self and neighbor.
-		'''
-		self.id = vertex_id
-		self.neighbors = {}
-
-	def add_neighbor(self, vertex, weight=1):
-		'''Add a neighbor along a weighted edge.'''
-		# TODO check if vertex is already a neighbor
-		# TODO if not, add vertex to neighbors and assign weight.
-
-	def __str__(self):
-		'''Output the list of neighbors of this vertex.'''
-		return f"{self.id} adjacent to {[x.id for x in self.neighbors]}"
-
-	def get_neighbors(self):
-		'''Return the neighbors of this vertex.'''
-		# TODO return the neighbors
-
-	def get_id(self):
-		'''Return the id of this vertex.'''
-		return self.id
-
-	def get_edge_weight(self, vertex):
-		'''Return the weight of this edge.'''
-		# TODO return the weight of the edge from this
-		# vertex to the given vertex.
 
 
 class Graph:
-	''' Graph Class
-	A class demonstrating the essential facts and functionalities of graphs.
 	'''
-	def __init__(self):
-		'''Initialize a graph object with an empty dictionary.'''
-		self.vert_list = {}
-		self.num_vertices = 0
-
-	def add_vertex(self, key):
-		'''Add a new vertex object to the graph with the given key and return
-		the vertex.'''
-		# TODO increment the number of vertices
-		# TODO create a new vertex
-		# TODO add the new vertex to the vertex list
-		# TODO return the new vertex
-
-	def get_vertex(self, key):
-		'''Return the vertex if it exists'''
-		# TODO return the vertex if it is in the graph
-
-	def add_edge(self, key1, key2, weight=1):
-		'''Add an edge from vertex with key `key1` to vertex with key `key2`
-		with a weight.'''
-		# TODO if either vertex is not in the graph,
-		# add it - or return an error (choice is up to you).
-		# TODO if both vertices in the graph, add the
-		# edge by making key1 a neighbor of key2
-		# and using the add_neighbor method of the Vertex class.
-		# Hint: the vertex corresponding to key1 is stored in 
-		# self.vert_list[key1].
-
-	def get_vertices(self):
-		'''Return all the vertices in the graph'''
-		return self.vert_list.keys()
-
-	def __iter__(self):
-		'''Iterate over the vertex objects in the graph, to use sytax:
-		for v in g'''
-		return iter(self.vert_list.values())
+	'''
 
 
-# Driver code
-if __name__ == "__main__":
+	def __init__(self, filepath=None):
+		'''
+		'''
+		if not filepath:
+			filepath = input('input the filepath to a graph: ')
+		text_data = self.read_file(filepath)
+		self.graph = self.extract(text_data)
 
-	# Challenge 1: Create the graph
 
-	g = Graph()
+	def __repr__(self):
+		return str(self.graph)
 
-	# Add your friends
-	g.add_vertex("Friend 1")
-	g.add_vertex("Friend 2")
-	g.add_vertex("Friend 3")
 
-	# ...  add all 10 including you ...
+	def read_file(self, text_file_path):
+		'''
+		'''
+		text_data = []
+		# read file from the source
+		with open(text_file_path, 'r') as file:
+			text_data = file.readlines()
+		# clean text_data by stripping
+		for index, entry in enumerate(text_data):
+			text_data[index] = entry.strip()
+		return text_data
 
-	# Add connections (non weighted edges for now)
-	g.add_edge("Friend 1", "Friend 2")
-	g.add_edge("Friend 2", "Friend 3")
 
-	# Challenge 1: Output the vertices & edges
-	# Print vertices
-	print(f"The vertices are: {g.get_vertices()} \n")
+	def extract(self, text_data):
+		'''
+		'''
+		graph = {}
 
-	# Print edges
-	print("The edges are: ")
-	for v in g:
-		for w in v.get_neighbors():
-			print(f"( {v.get_id()} , {w.get_id()} )")
+		# get graph type
+		graph_type = ''
+		if text_data[0].lower() == 'g':
+			graph_type = 'graph'
+		elif text_data[0].lower() == 'd':
+			graph_type = 'digraph'
+		else:
+			raise
+		graph['type'] = graph_type
+
+		# establish new vertices
+		vertex_dict = {}
+		vertex_list = text_data[1].split(',')
+		for vertex_id in vertex_list:
+			vertex_dict[str(vertex_id)] = Vertex(str(vertex_id))
+		graph['vertices'] = vertex_dict
+
+		# populate vertices with edge data
+		edge_list = text_data[2:]
+		# loop through every edge
+		for index, edge in enumerate(edge_list):
+			# ensure edge starts as expected
+			assert('(' in edge)
+			assert(')' in edge)
+			# clean edge
+			edge = re.sub(r'[\(\)]', '', edge)
+			edge = edge.split(',')
+			# vertex_a_id/_b_id are just string ids
+			vertex_a_id = str(edge[0])
+			vertex_b_id = str(edge[1])
+			# these are actual vertex objects
+			VertexA = graph['vertices'][vertex_a_id]
+			VertexB = graph['vertices'][vertex_b_id]
+
+			# edge has no weight
+			if len(edge) == 2:
+				# add edge on main vertex
+				VertexA.add_edge(vertex_b_id)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id)
+
+			# edge is weighted
+			elif len(edge) == 3:
+				# the third item is the weight
+				weight = int(edge[2])
+				# add edge on both vertices
+				VertexA.add_edge(vertex_b_id, weight)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id, weight)
+
+			# unexpected length
+			else:
+				raise
+		return graph
+
+
+	def count_vertices(self):
+		return len(self.graph['vertices'])
+
+
+	def count_edges(self):
+		return len(self.get_edges())
+
+
+	def get_edges(self):
+		edge_list = []
+		for vertex in self.graph['vertices']:
+			# i_key is the starting vertex
+			i_key = vertex
+			# i_val is the edge list of i_key vertex
+			i_val = self.graph['vertices'][vertex]
+			for neighbor in i_val.edges:
+				# j_key is the list of neighboring vertices
+				j_key = neighbor
+				# check if this vertex combo is worth adding
+				if j_key >= i_key or self.graph['type'] == 'digraph':
+					# j_val is the weight of the edge
+					j_val = i_val.edges[j_key]
+					# check if this graph has weights
+					if j_val:
+						edge = [i_key, j_key, j_val]
+					else:
+						edge = [i_key, j_key]
+					# add edge to edge_list
+					edge_list.append(edge)
+		return edge_list
+
+
+	def textify_edges(self):
+		edge_list = self.get_edges()
+		final_string = ''
+		for edge in edge_list:
+			edge_string = ','.join(edge)
+			final_string += '('
+			final_string += edge_string
+			final_string += ')\n'
+		return final_string.strip()
+
+
+	def shortest_path_bfs(self, A, B):
+		# from A to B
+		# create hot-vars
+		vertices = self.graph['vertices']
+		# create visited set, and visit vertex A
+		visited = {A}
+		# create vertex queue, and start with vertex A
+		queue = [[A]] # HACK not a real queue
+
+		while queue != []:
+			# dequeue first vertex
+			# HACK change later for non-array
+			a_list = queue.pop()
+			A = a_list[-1]
+			if A == B:
+				return a_list
+			# add its neighbors to the queue
+			for C in vertices[A].edges:
+				if C in visited:
+					pass
+				else:
+					# visit the vertex
+					visited.add(C)
+					# HACK change later for non-array
+					n_list = a_list[:]
+					n_list.append(C)
+					queue.insert(0, n_list)
+		return []
+
+
+
+if __name__ == '__main__':
+	if len(sys.argv) == 1:
+		test_graph = Graph()
+	elif len(sys.argv) == 2:
+		test_graph = Graph(sys.argv[1])
+
+	elif len(sys.argv) == 3 or len(sys.argv) == 4:
+		if len(sys.argv) == 4:
+			test_graph = Graph(sys.argv[1])
+		else:
+			test_graph = Graph()
+
+		A = sys.argv[2]
+		B = sys.argv[3]
+		result_list = test_graph.shortest_path_bfs(A,B)
+		print(
+			'Vertices in shortest path: '
+			f'{",".join(result_list)}'
+			'\nNumber of edges in shortest path: '
+			f'{len(result_list) - 1}'
+		)
+
+	else:
+		raise
