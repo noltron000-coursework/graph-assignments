@@ -5,12 +5,14 @@ if __name__ == '__main__':
 	if len(sys.argv) == 1:
 		graph = Graph('network.txt')
 		A = input('enter node: ')
-		
-	elif len(sys.argv) == 2:
+		N = input('input Nth degree: ')
+
+	elif len(sys.argv) == 3:
 		graph = Graph('network.txt')
 		A = sys.argv[1]
+		N = sys.argv[2]
 
 	else:
 		raise
 
-	print(graph.graph['vertices'][A])
+	print(graph.nth_degree_neighbors(A,N))

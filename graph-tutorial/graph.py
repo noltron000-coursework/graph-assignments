@@ -173,6 +173,57 @@ class Graph:
 		return []
 
 
+	def nth_degree_neighbors(self, A, N):
+		N = int(N)
+		# from A to B
+		# create hot-vars
+		vertices = self.graph['vertices']
+		# create visited set, and visit vertex A
+		visited = {A}
+		# create vertex queue, and start with vertex A
+		queue = [[A]] # HACK not a real queue
+
+		# degree trackers
+		good_degrees = []
+		bad_degrees  = []
+
+		while queue != []:
+			# dequeue first vertex
+			# HACK change later for non-array
+			a_list = queue.pop()
+			A = a_list[-1]
+			if len(a_list) == N:
+				good_degrees.append(a_list)
+			else:
+				bad_degrees.append(a_list)
+			# add its neighbors to the queue
+			for C in vertices[A].edges:
+				if C in visited:
+					pass
+				else:
+					# visit the vertex
+					visited.add(C)
+					# HACK change later for non-array
+					n_list = a_list[:]
+					n_list.append(C)
+					queue.insert(0, n_list)
+
+		# degree trackers
+		bad_set = set()
+		good_final = []
+		# bad stuff
+		for bad in bad_degrees:
+			if len(bad) < N:
+				bad_set.add(bad[-1])
+		# good stuff
+		for good in good_degrees:
+			if good[-1] in bad_set:
+				pass
+			else:
+				good_final.append(good)
+		return good_final
+
+
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
