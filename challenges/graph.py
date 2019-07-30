@@ -1,3 +1,4 @@
+from vertex import Vertex
 import sys
 import re
 
@@ -117,22 +118,6 @@ class Graph:
 					n_list.append(C)
 					queue.insert(0, n_list)
 		return []
-
-
-
-class Vertex:
-	'''
-	'''
-	def __init__(self, vertex_id):
-		self.edges = {}
-
-	def __repr__(self):
-		return f'GRAPH {str(self.edges)}'
-
-	def add_edge(self, vertex_id, weight=None):
-		self.edges[vertex_id] = weight
-
-
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
