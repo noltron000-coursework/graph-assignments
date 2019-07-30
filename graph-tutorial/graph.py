@@ -210,6 +210,7 @@ class Graph:
 
 		# degree trackers
 		bad_set = set()
+		good_set = set()
 		good_final = []
 		# bad stuff
 		for bad in bad_degrees:
@@ -217,8 +218,12 @@ class Graph:
 				bad_set.add(bad[-1])
 		# good stuff
 		for good in good_degrees:
-			if good[-1] in bad_set:
+			if good[-1] in good_set:
 				pass
 			else:
-				good_final.append(good)
+				good_set.add(good[-1])
+				if good[-1] in bad_set:
+					pass
+				else:
+					good_final.append(good)
 		return good_final
