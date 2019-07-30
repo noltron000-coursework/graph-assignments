@@ -1,12 +1,11 @@
 import sys
 from graph import Graph
 
-def main(Graph):
-	Graph = Graph.graph
-	graph_type = Graph['type']
-	vert_count = None
-	edge_count = None
-	edge_list  = None
+def main(Object):
+	graph_type = Object.graph['type']
+	vert_count = Object.count_vertices()
+	edge_list  = Object.extract_edges()
+	edge_count = len(edge_list)
 
 	# summary is a multi-line output
 	summary = '' \
@@ -15,14 +14,22 @@ def main(Graph):
 	f'# Edges: {edge_count}\n' \
 	f'Edge List:\n{edge_list}\n'
 
-	print(summary)
+	# return the summary
+	return summary
+
+def __repr__(self):
+	vertices = len(self.graph['vertices'])
+	edge_list = self.extract_edges()
+	edge_len = len(edge_list.split('\n'))
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
-		main(Graph())
+		output = main(Graph())
 
 	elif len(sys.argv) == 2:
-		main(Graph(sys.argv[1]))
+		output = main(Graph(sys.argv[1]))
 
 	else:
 		raise
+
+	print(output)

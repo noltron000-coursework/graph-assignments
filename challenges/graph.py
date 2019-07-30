@@ -16,6 +16,18 @@ class Graph:
 	def __repr__(self):
 		return str(self.graph)
 
+	def read_file(self, text_file_path):
+		'''
+		'''
+		text_data = []
+		# read file from the source
+		with open(text_file_path, 'r') as file:
+			text_data = file.readlines()
+		# clean text_data by stripping
+		for index, entry in enumerate(text_data):
+			text_data[index] = entry.strip()
+		return text_data
+
 	def extract(self, text_data):
 		'''
 		'''
@@ -78,17 +90,29 @@ class Graph:
 				raise
 		return graph
 
-	def read_file(self, text_file_path):
-		'''
-		'''
-		text_data = []
-		# read file from the source
-		with open(text_file_path, 'r') as file:
-			text_data = file.readlines()
-		# clean text_data by stripping
-		for index, entry in enumerate(text_data):
-			text_data[index] = entry.strip()
-		return text_data
+	def count_vertices(self):
+		return len(self.graph['vertices'])
+
+	def count_edges(self):
+		return len(self.extract_edges)
+
+	def extract_edges(self):
+		final_string =''
+		for vertex in self.graph['vertices']:
+			i_key = vertex
+			i_val = self.graph['vertices'][vertex]
+			for neighbor in i_val.edges:
+				sub_string = f'({i_key},'
+				j_key = neighbor
+				if j_key >= i_key or self.graph['type'] == 'digraph':
+					j_val = i_val.edges[j_key]
+					sub_string += j_key
+					if j_val:
+						sub_string += f',{j_val})\n'
+					else:
+						sub_string += f')\n'
+					final_string += sub_string
+		return final_string.strip()
 
 	def shortest_path_bfs(self, A, B):
 		# from A to B
