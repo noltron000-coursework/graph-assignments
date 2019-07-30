@@ -1,7 +1,12 @@
+# python packages
 import sys
+# internal projects
 from graph import Graph
 
+
+
 def main(Object):
+	# grab variables for our summary
 	graph_type = Object.graph['type']
 	edge_count = Object.count_edges()
 	vert_count = Object.count_vertices()
@@ -17,18 +22,18 @@ def main(Object):
 	# return the summary
 	return summary
 
-def __repr__(self):
-	vertices = len(self.graph['vertices'])
-	edge_list = self.extract_edges()
-	edge_len = len(edge_list.split('\n'))
+
 
 if __name__ == '__main__':
+	# no filepath -- ask for a string
 	if len(sys.argv) == 1:
 		output = main(Graph())
 
+	# looks like we got a filepath!
 	elif len(sys.argv) == 2:
 		output = main(Graph(sys.argv[1]))
 
+	# there was a problem D:
 	else:
 		raise
 

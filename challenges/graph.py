@@ -5,6 +5,7 @@ import re
 class Graph:
 	'''
 	'''
+
 	def __init__(self, filepath=None):
 		'''
 		'''
@@ -13,8 +14,10 @@ class Graph:
 		text_data = self.read_file(filepath)
 		self.graph = self.extract(text_data)
 
+
 	def __repr__(self):
 		return str(self.graph)
+
 
 	def read_file(self, text_file_path):
 		'''
@@ -27,6 +30,7 @@ class Graph:
 		for index, entry in enumerate(text_data):
 			text_data[index] = entry.strip()
 		return text_data
+
 
 	def extract(self, text_data):
 		'''
@@ -90,11 +94,14 @@ class Graph:
 				raise
 		return graph
 
+
 	def count_vertices(self):
 		return len(self.graph['vertices'])
 
+
 	def count_edges(self):
 		return len(self.get_edges())
+
 
 	def get_edges(self):
 		edge_list = []
@@ -119,6 +126,7 @@ class Graph:
 					edge_list.append(edge)
 		return edge_list
 
+
 	def textify_edges(self):
 		edge_list = self.get_edges()
 		final_string = ''
@@ -128,6 +136,7 @@ class Graph:
 			final_string += edge_string
 			final_string += ')\n'
 		return final_string.strip()
+
 
 	def shortest_path_bfs(self, A, B):
 		# from A to B
@@ -157,6 +166,7 @@ class Graph:
 					n_list.append(C)
 					queue.insert(0, n_list)
 		return []
+
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
