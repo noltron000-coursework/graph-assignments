@@ -1,10 +1,15 @@
+# python packages
 from vertex import Vertex
+# internal projects
 import sys
 import re
+
+
 
 class Graph:
 	'''
 	'''
+
 
 	def __init__(self, filepath=None):
 		'''
