@@ -3,7 +3,6 @@
 # Your Social Network - Graph Tutorial
 [Graph Tutorial Rubric](https://docs.google.com/document/d/1ICVRzuDMIapVhpqbG7oHpk7_yCWu2bET8EYv6o_J9io/edit?usp=sharing)
 
-
 ## Chapter 0: Set up
 How many social network platforms are you currently on? Each of those is an example of graph theory being applied to solve the problem of finding connections – and recommending appropriate ones.
 
@@ -43,14 +42,12 @@ Throughout this tutorial we will build up a *graph data structure* that will imp
 We will be building onto the basic Graph Abstract Data Type (ADT) which is defined as follows:
 
 ```python
-
 Graph() #creates a new, empty graph.
 add_vertex(vert) #adds an instance of vertex to the graph.
 add_edge(from_vert, to_vert) #Adds a new, directed edge to the graph that connects two vertices.
 add_edge(from_vert, to_vert, weight) #Adds a new, weighted, directed edge to the graph that connects two vertices.
 get_vertex(vertKey) #finds the vertex in the graph named vertKey.
 get_vertices() #returns the list of all vertices in the graph.
-
 ```
 
 **Challenge:** Implement the `Graph` class in the file *graph.py* and input your personal Social Graph with vertices and edges matching the diagram you drew of your friends.  Note: Initially we'll create a `Vertex` class as a helper class to the `Graph` class.
@@ -101,7 +98,6 @@ def get_neighbors(self):
 
 ### Down The Friend Chain We Go
 All right, no more surprise connections for us! But what if we want to go even _further_ than one connection? Onward!
-
 
 ## Chapter 3: Breadth of Fresh Neighbors
 
@@ -180,10 +176,7 @@ def find_shortest_path(self, A, B):
 # Return the shortest path, in the order of nodes visited starting with A and ending with B
 ```
 
-
 It's great to find the _shortest_ path, but sometimes we want to know more about a graph. There's a lot of properties around distance we can measure, and we'll dive into another one of them in the next chapter!
-
-
 
 ### Clique through
 As with any large group of people, smaller groups start to form within the larger ones. We can find these cliques through graph theory.  On to the next chapter to discover how..
@@ -270,7 +263,6 @@ def influencer(self):
 		# Replace previous PageRanks with new PageRanks
 # Sort all vertices according to their PageRank value, return sorted list
 ```
-
 
 **Congrats on completing your journey through your Social Network!**
 
