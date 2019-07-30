@@ -3,9 +3,9 @@ from graph import Graph
 
 def main(Object):
 	graph_type = Object.graph['type']
+	edge_count = Object.count_edges()
 	vert_count = Object.count_vertices()
-	edge_list  = Object.extract_edges()
-	edge_count = len(edge_list)
+	edge_list  = Object.textify_edges()
 
 	# summary is a multi-line output
 	summary = '' \

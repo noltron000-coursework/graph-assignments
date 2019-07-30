@@ -94,24 +94,39 @@ class Graph:
 		return len(self.graph['vertices'])
 
 	def count_edges(self):
-		return len(self.extract_edges)
+		return len(self.get_edges())
 
-	def extract_edges(self):
-		final_string =''
+	def get_edges(self):
+		edge_list = []
 		for vertex in self.graph['vertices']:
+			# i_key is the starting vertex
 			i_key = vertex
+			# i_val is the edge list of i_key vertex
 			i_val = self.graph['vertices'][vertex]
 			for neighbor in i_val.edges:
-				sub_string = f'({i_key},'
+				# j_key is the list of neighboring vertices
 				j_key = neighbor
+				# check if this vertex combo is worth adding
 				if j_key >= i_key or self.graph['type'] == 'digraph':
+					# j_val is the weight of the edge
 					j_val = i_val.edges[j_key]
-					sub_string += j_key
+					# check if this graph has weights
 					if j_val:
-						sub_string += f',{j_val})\n'
+						edge = [i_key, j_key, j_val]
 					else:
-						sub_string += f')\n'
-					final_string += sub_string
+						edge = [i_key, j_key]
+					# add edge to edge_list
+					edge_list.append(edge)
+		return edge_list
+
+	def textify_edges(self):
+		edge_list = self.get_edges()
+		final_string = ''
+		for edge in edge_list:
+			edge_string = ','.join(edge)
+			final_string += '('
+			final_string += edge_string
+			final_string += ')\n'
 		return final_string.strip()
 
 	def shortest_path_bfs(self, A, B):
