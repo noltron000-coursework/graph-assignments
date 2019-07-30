@@ -222,30 +222,3 @@ class Graph:
 			else:
 				good_final.append(good)
 		return good_final
-
-
-
-if __name__ == '__main__':
-	if len(sys.argv) == 1:
-		test_graph = Graph()
-	elif len(sys.argv) == 2:
-		test_graph = Graph(sys.argv[1])
-
-	elif len(sys.argv) == 3 or len(sys.argv) == 4:
-		if len(sys.argv) == 4:
-			test_graph = Graph(sys.argv[1])
-		else:
-			test_graph = Graph()
-
-		A = sys.argv[2]
-		B = sys.argv[3]
-		result_list = test_graph.shortest_path_bfs(A,B)
-		print(
-			'Vertices in shortest path: '
-			f'{",".join(result_list)}'
-			'\nNumber of edges in shortest path: '
-			f'{len(result_list) - 1}'
-		)
-
-	else:
-		raise
