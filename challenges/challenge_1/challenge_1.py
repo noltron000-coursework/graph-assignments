@@ -1,188 +1,160 @@
-'''
-Challenge 1
-Implement the Graph ADT with an adjacency list
-Implement code to read in a graph from a text file to create an instance of the Graph ADT and use it's methods.
-Input: A graph file (can contain a directed or undirected graph with or without weights) python3 challenge_1.py graph_data.txt
-
-G
-1,2,3,4
-(1,2,10)
-(1,4,5)
-(2,3,5)
-(2,4,7)
-
-Output:
-
-The # vertices in the graph.
-The # edges in the graph.
-A list of the edges with their weights (if weighted)
-# Vertices: 4
-# Edges: 4
-Edge List:
-(1,2,10)
-(1,4,5)
-(2,3,5)
-(2,4,7)
-'''
 import sys
+import re
 
-class GraphADT:
+class Graph:
 	'''
 	'''
-	def __init__(self, text_file_path=None):
+	def __init__(self, filepath=None):
 		'''
 		'''
-		# check for default parameter
-		if not text_file_path:
-			 text_file_path = input('enter text file: ')
-		file_data = self.read_file(text_file_path)
-		self.graph = self.extract(file_data)
+		if not filepath:
+			filepath = input('input the filepath to a graph: ')
+		text_data = self.read_file(filepath)
+		self.graph = self.extract(text_data)
 
 	def __repr__(self):
-		vertices = len(self.graph['nodes'])
-		edge_list = self.extract_edges()
-		edge_len = len(edge_list.split('\n'))
-		return (
-			f'# Vertices: {vertices}\n'
-			f'# Edges: {edge_len}\n'
-			f'Edge List:\n'
-			f'{edge_list}\n'
-		)
+		return str(self.graph)
 
-	def extract_edges(self):
-		if self.graph['type'] == 'graph':
-			return self.extract_edges_g()
-		elif self.graph['type'] == 'digraph':
-			return self.extract_edges_d()
-		else:
-			raise
-
-	def extract_edges_d(self):
-		final_string =''
-		for vertex in self.graph['nodes']:
-			i_key = vertex
-			i_val = self.graph['nodes'][vertex]
-			for neighbor in i_val.edges:
-				sub_string = f'({i_key},'
-				j_key = neighbor
-				j_val = i_val.edges[j_key]
-				sub_string += j_key
-				if j_val:
-					sub_string += f',{j_val})\n'
-				else:
-					sub_string += f')\n'
-				final_string += sub_string
-		return final_string
-
-	def extract_edges_g(self):
-		final_string =''
-		for vertex in self.graph['nodes']:
-			i_key = vertex
-			i_val = self.graph['nodes'][vertex]
-			for neighbor in i_val.edges:
-				sub_string = f'({i_key},'
-				j_key = neighbor
-				if j_key > i_key:
-					j_val = i_val.edges[j_key]
-					sub_string += j_key
-					if j_val:
-						sub_string += f',{j_val})\n'
-					else:
-						sub_string += f')\n'
-					final_string += sub_string
-		return final_string
-
-	def read_file(self, text_file_path):
-		'''
-		'''
-		file_data = []
-		# read file from the source
-		with open(text_file_path, 'r') as file:
-			file_data = file.readlines()
-		# clean file_data by stripping
-		for index, entry in enumerate(file_data):
-			file_data[index] = entry.strip()
-		return file_data
-
-	def extract(self, file_data):
+	def extract(self, text_data):
 		'''
 		'''
 		graph = {}
 
 		# get graph type
 		graph_type = ''
-		if file_data[0].lower() == 'g':
+		if text_data[0].lower() == 'g':
 			graph_type = 'graph'
-		elif file_data[0].lower() == 'd':
+		elif text_data[0].lower() == 'd':
 			graph_type = 'digraph'
 		else:
 			raise
 		graph['type'] = graph_type
 
-		# establish new nodes
-		node_dict = {}
-		node_list = file_data[1].split(',')
-		for node_id in node_list:
-			node_dict[str(node_id)] = Vertex(str(node_id))
-		graph['nodes'] = node_dict
+		# establish new vertices
+		vertex_dict = {}
+		vertex_list = text_data[1].split(',')
+		for vertex_id in vertex_list:
+			vertex_dict[str(vertex_id)] = Vertex(str(vertex_id))
+		graph['vertices'] = vertex_dict
 
-		# populate nodes with edge data
-		edge_list = file_data[2:]
+		# populate vertices with edge data
+		edge_list = text_data[2:]
+		# loop through every edge
 		for index, edge in enumerate(edge_list):
 			# ensure edge starts as expected
 			assert('(' in edge)
 			assert(')' in edge)
 			# clean edge
-			edge = edge.replace('(','')
-			edge = edge.replace(')','')
+			edge = re.sub(r'[\(\)]', '', edge)
 			edge = edge.split(',')
+			# vertex_a_id/_b_id are just string ids
+			vertex_a_id = str(edge[0])
+			vertex_b_id = str(edge[1])
+			# these are actual vertex objects
+			VertexA = graph['vertices'][vertex_a_id]
+			VertexB = graph['vertices'][vertex_b_id]
+
 			# edge has no weight
 			if len(edge) == 2:
-				# node_id_a/_b are just string ids
-				node_id_a = str(edge[0])
-				node_id_b = str(edge[1])
-				# these are actual node objects
-				# print(graph['nodes'])
-				node_a = graph['nodes'][node_id_a]
-				node_b = graph['nodes'][node_id_b]
-				# add edge on both nodes
-				node_a.add_edge(node_id_b)
-				node_b.add_edge(node_id_a)
+				# add edge on main vertex
+				VertexA.add_edge(vertex_b_id)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id)
+
 			# edge is weighted
 			elif len(edge) == 3:
-				# node_id_a/_b are just string ids
-				node_id_a = str(edge[0])
-				node_id_b = str(edge[1])
+				# the third item is the weight
 				weight = int(edge[2])
-				# these are actual node objects
-				node_a = graph['nodes'][node_id_a]
-				node_b = graph['nodes'][node_id_b]
-				# add edge on both nodes
-				node_a.add_edge(node_id_b, weight)
-				node_b.add_edge(node_id_a, weight)
-			else:
-				# unexpected length
-				raise
+				# add edge on both vertices
+				VertexA.add_edge(vertex_b_id, weight)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id, weight)
 
+			# unexpected length
+			else:
+				raise
 		return graph
+
+	def read_file(self, text_file_path):
+		'''
+		'''
+		text_data = []
+		# read file from the source
+		with open(text_file_path, 'r') as file:
+			text_data = file.readlines()
+		# clean text_data by stripping
+		for index, entry in enumerate(text_data):
+			text_data[index] = entry.strip()
+		return text_data
+
+	def shortest_path_bfs(self, A, B):
+		# from A to B
+		# create hot-vars
+		vertices = self.graph['vertices']
+		# create visited set, and visit vertex A
+		visited = {A}
+		# create vertex queue, and start with vertex A
+		queue = [[A]] # HACK not a real queue
+
+		while queue != []:
+			# dequeue first vertex
+			# HACK change later for non-array
+			a_list = queue.pop()
+			A = a_list[-1]
+			if A == B:
+				return a_list
+			# add its neighbors to the queue
+			for C in vertices[A].edges:
+				if C in visited:
+					pass
+				else:
+					# visit the vertex
+					visited.add(C)
+					# HACK change later for non-array
+					n_list = a_list[:]
+					n_list.append(C)
+					queue.insert(0, n_list)
+		return []
+
+
 
 class Vertex:
 	'''
 	'''
-	def __init__(self, node_id):
+	def __init__(self, vertex_id):
 		self.edges = {}
 
 	def __repr__(self):
-		return f'\n  NODE -> {self.edges}\n\n'
+		return f'GRAPH {str(self.edges)}'
 
-	def add_edge(self, node_id, weight = None):
-		self.edges[node_id] = weight
+	def add_edge(self, vertex_id, weight=None):
+		self.edges[vertex_id] = weight
+
+
 
 if __name__ == '__main__':
 	if len(sys.argv) == 1:
-		test_graph = GraphADT()
+		test_graph = Graph()
 	elif len(sys.argv) == 2:
-		test_graph = GraphADT(sys.argv[1])
+		test_graph = Graph(sys.argv[1])
+
+	elif len(sys.argv) == 3 or len(sys.argv) == 4:
+		if len(sys.argv) == 4:
+			test_graph = Graph(sys.argv[1])
+		else:
+			test_graph = Graph()
+
+		A = sys.argv[2]
+		B = sys.argv[3]
+		result_list = test_graph.shortest_path_bfs(A,B)
+		print(
+			'Vertices in shortest path: '
+			f'{",".join(result_list)}'
+			'\nNumber of edges in shortest path: '
+			f'{len(result_list) - 1}'
+		)
+
 	else:
 		raise
-	print(test_graph)

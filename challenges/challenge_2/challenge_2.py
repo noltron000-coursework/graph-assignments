@@ -1,12 +1,12 @@
 import sys
 import re
 
-
-
 class Graph:
-	''''''
+	'''
+	'''
 	def __init__(self, filepath=None):
-		''''''
+		'''
+		'''
 		if not filepath:
 			filepath = input('input the filepath to a graph: ')
 		text_data = self.read_file(filepath)
@@ -16,7 +16,8 @@ class Graph:
 		return str(self.graph)
 
 	def extract(self, text_data):
-		''''''
+		'''
+		'''
 		graph = {}
 
 		# get graph type
@@ -38,39 +39,38 @@ class Graph:
 
 		# populate vertices with edge data
 		edge_list = text_data[2:]
+		# loop through every edge
 		for index, edge in enumerate(edge_list):
-
 			# ensure edge starts as expected
 			assert('(' in edge)
 			assert(')' in edge)
 			# clean edge
 			edge = re.sub(r'[\(\)]', '', edge)
 			edge = edge.split(',')
+			# vertex_a_id/_b_id are just string ids
+			vertex_a_id = str(edge[0])
+			vertex_b_id = str(edge[1])
+			# these are actual vertex objects
+			VertexA = graph['vertices'][vertex_a_id]
+			VertexB = graph['vertices'][vertex_b_id]
 
 			# edge has no weight
 			if len(edge) == 2:
-				# vertex_id_a/_b are just string ids
-				vertex_a_id = str(edge[0])
-				vertex_b_id = str(edge[1])
-				# these are actual vertex objects
-				VertexA = graph['vertices'][vertex_a_id]
-				VertexB = graph['vertices'][vertex_b_id]
-				# add edge on both vertices
+				# add edge on main vertex
 				VertexA.add_edge(vertex_b_id)
-				VertexB.add_edge(vertex_a_id)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id)
 
 			# edge is weighted
 			elif len(edge) == 3:
-				# vertex_a_id/_b are just string ids
-				vertex_a_id = str(edge[0])
-				vertex_b_id = str(edge[1])
+				# the third item is the weight
 				weight = int(edge[2])
-				# these are actual vertex objects
-				VertexA = graph['vertices'][vertex_a_id]
-				VertexB = graph['vertices'][vertex_b_id]
 				# add edge on both vertices
 				VertexA.add_edge(vertex_b_id, weight)
-				VertexB.add_edge(vertex_a_id, weight)
+				# if this is not a digraph, add an edge back
+				if graph['type'] == 'graph':
+					VertexB.add_edge(vertex_a_id, weight)
 
 			# unexpected length
 			else:
@@ -78,7 +78,8 @@ class Graph:
 		return graph
 
 	def read_file(self, text_file_path):
-		''''''
+		'''
+		'''
 		text_data = []
 		# read file from the source
 		with open(text_file_path, 'r') as file:
@@ -120,7 +121,8 @@ class Graph:
 
 
 class Vertex:
-	''''''
+	'''
+	'''
 	def __init__(self, vertex_id):
 		self.edges = {}
 
