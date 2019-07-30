@@ -23,16 +23,28 @@ def main(Object, A, B):
 
 if __name__ == '__main__':
 	# no filepath -- ask for a string
-	if len(sys.argv) == 3:
+	if len(sys.argv) == 1:
+		file = sys.argv[1]
+		A = input('input 1st node: ')
+		B = input('input 2nd node: ')
+
+	elif len(sys.argv) == 2:
+		file = sys.argv[1]
+		A = input('input 1st node: ')
+		B = input('input 2nd node: ')
+		output = main(Graph(file), A, B)
+
+	elif len(sys.argv) == 3:
 		A = sys.argv[1]
 		B = sys.argv[2]
 		output = main(Graph(), A, B)
 
 	# looks like we got a filepath!
 	elif len(sys.argv) == 4:
+		file = sys.argv[1]
 		A = sys.argv[2]
 		B = sys.argv[3]
-		output = main(Graph(sys.argv[1]), A, B)
+		output = main(Graph(file), A, B)
 
 	# there was a problem D:
 	else:
