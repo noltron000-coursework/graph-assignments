@@ -144,19 +144,29 @@ class Graph:
 
 
 	def shortest_path_bfs(self, A, B):
-		# from A to B
-		# create hot-vars
+		'''
+		A = given starting node
+		B = given finishing node
+		C = arbitrary iterated node
+		a_list = 
+		b_list = 
+		c_list = 
+		queue:
+		visited: set of visited vertices
+		vertices: every single vertex in the graph
+		'''
 		vertices = self.graph['vertices']
-		# create visited set, and visit vertex A
-		visited = {A}
 		# create vertex queue, and start with vertex A
 		queue = [[A]] # HACK not a real queue
+		# create visited set, and start with vertex A
+		visited = {A}
 
 		while queue != []:
 			# dequeue first vertex
 			# HACK change later for non-array
 			a_list = queue.pop()
 			A = a_list[-1]
+			# check a condition
 			if A == B:
 				return a_list
 			# add its neighbors to the queue
@@ -167,16 +177,14 @@ class Graph:
 					# visit the vertex
 					visited.add(C)
 					# HACK change later for non-array
-					n_list = a_list[:]
-					n_list.append(C)
-					queue.insert(0, n_list)
+					c_list = a_list[:]
+					c_list.append(C)
+					queue.insert(0, c_list)
 		return []
 
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
-		# from A to B
-		# create hot-vars
 		vertices = self.graph['vertices']
 		# create visited set, and visit vertex A
 		visited = {A}
@@ -192,6 +200,7 @@ class Graph:
 			# HACK change later for non-array
 			a_list = queue.pop()
 			A = a_list[-1]
+			# check a condition
 			if len(a_list) == N:
 				good_degrees.append(a_list)
 			else:
@@ -231,3 +240,71 @@ class Graph:
 				else:
 					good_final.append(good)
 		return good_final
+
+
+	def find_largest_clique(self):
+		'''
+		'''
+		# loop through every vertex in graph, named parent
+		all_nodes = self.graph['vertices']
+		print(all_nodes)
+		
+		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
+		return set(tuple(sorted(item)) for item in result)
+
+	def get_deepest_clique(self, neighbors, valid_neighbors, visited):
+		'''
+		# for all children
+			# every child must also be a sibling or it is not valid
+		# for all siblings
+			# every sibling must also be a child or it is not valid
+		# we should have valid nodes ripe for a new function
+		# create a clique list
+		# for each valid, unvisited node
+			# visit the node before function call
+			# add funciton call of node to clique list
+		# return clique list
+		'''
+		all_nodes = self.graph['vertices']
+		# prepare return value
+		cliques = set()
+		BASE = True
+		# validate
+		new_valid_neighbors = set(neighbors) & valid_neighbors
+		# check base case
+		# loop through every valid vertex
+		for vertex in new_valid_neighbors:
+			if vertex in visited:
+				# don't redundently visit vertices
+				pass
+			else:
+				# turn off base case
+				BASE = False
+				# copy visited to alter in fresh function stack
+				new_visited = visited.copy()
+				# visit the vertex in this timeline
+				new_visited.add(vertex)
+				# get new neighbors
+				Vertex = all_nodes[vertex]
+				new_neighbors = Vertex.edges
+				# function call
+				result = self.get_deepest_clique(
+					new_neighbors, new_valid_neighbors, new_visited)
+				if isinstance(result, tuple):
+					if isinstance(result[0], tuple):
+						for real_result in result:
+							cliques.add(real_result)
+					else:
+						cliques.add(result)
+				elif isinstance(result, set):
+					for real_result in result:
+						cliques.add(real_result)
+				else:
+					cliques.add(result)
+
+		if BASE:
+			visited = tuple(visited)
+			print(visited)
+			return visited
+		else:
+			return cliques
