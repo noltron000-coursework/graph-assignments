@@ -4,7 +4,6 @@ import sys
 from graph import Graph
 
 
-
 def main(Object, A, B):
 	# grab variables for our summary
 	shortest_path = Object.shortest_path_bfs(A,B)
@@ -16,7 +15,7 @@ def main(Object, A, B):
 	# summary is a multi-line output
 	summary = '' \
 	f'There exists a path between' \
-	f'vertex {A} and {B}: {path_exists}\n'
+	f' vertex {A} and {B}: {path_exists}\n'
 	# gotta check if the path even exists!
 	if path_exists:
 		summary += '' \
@@ -24,7 +23,6 @@ def main(Object, A, B):
 
 	# return the summary
 	return summary
-
 
 
 if __name__ == '__main__':
