@@ -11,12 +11,14 @@ def prepare_knapsack(items, capacity):
 	the tuples inside store an item's name, value, and weight.
 	this variable represents desireable items to pack up.
 	'''
-	# storage starts full of items of unknown desireabilities.
+	# storage is full of items with unknown desireabilities.
 	storage = items.copy()
 	# knapsack holds desireable items & starts empty.
 	knapsack = set()
 	# as our knapsack fills up, its capacity will decrease.
 	return pack_bag(storage, knapsack, capacity)
+
+
 
 def pack_bag(storage, knapsack, capacity):
 	# needed to keep things in check
@@ -27,7 +29,7 @@ def pack_bag(storage, knapsack, capacity):
 	if capacity == 0 or len(storage) == 0:
 		return knapsack
 
-	# extract current item
+	# extract current item from storage
 	item = storage.pop()
 	# create semantic names
 	item_name = item[0]
@@ -74,7 +76,9 @@ def pack_bag(storage, knapsack, capacity):
 			return left_bag
 
 
+
 if __name__ == '__main__':
+	
 	# a given capacity of the knapsack
 	capacity = 50
 
@@ -94,4 +98,26 @@ if __name__ == '__main__':
 	# }
 
 	# sort the knapsack
-	print(prepare_knapsack(items, capacity))
+	knapsack = prepare_knapsack(items, capacity)
+	
+	# get value
+	value = 0
+	for column in (row[1] for row in knapsack):
+		value += column
+	# get weight
+	weight = 0
+	for column in (row[2] for row in knapsack):
+		weight += column
+
+	terminal_text = (
+		'For this input of items (name, value, weight):\n'
+		f'\t{items}\n\n'
+		'The optimal solution is:\n'
+		f'\t{knapsack}\n\n'
+		'The total weight is:\n'
+		f'\t{weight} / {capacity}\n\n'
+		'The total value is:\n'
+		f'\t{value}\n'
+	)
+
+	print(terminal_text)
