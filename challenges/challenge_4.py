@@ -1,4 +1,4 @@
-def sort_knapsack(items, capacity):
+def prepare_knapsack(items, capacity):
 	'''
 	"capacity" is a numeric value representing a max weight.
 	this capacity will be modified as items are added.
@@ -11,16 +11,15 @@ def sort_knapsack(items, capacity):
 	the tuples inside store an item's name, value, and weight.
 	this variable represents desireable items to pack up.
 	'''
-	# storage starts full of items with unknown desireabilities.
-	# storage holds undesireable items & starts empty.
+	# storage starts full of items of unknown desireabilities.
 	storage = items.copy()
 	# knapsack holds desireable items & starts empty.
 	knapsack = set()
 	# as our knapsack fills up, its capacity will decrease.
-	print(pack_decision(storage, knapsack, capacity))
+	return pack_bag(storage, knapsack, capacity)
 
-def pack_decision(storage, knapsack, capacity):
-	# not sure if these are needed...
+def pack_bag(storage, knapsack, capacity):
+	# needed to keep things in check
 	storage = storage.copy()
 	knapsack = knapsack.copy()
 
@@ -37,39 +36,42 @@ def pack_decision(storage, knapsack, capacity):
 
 	if item_weight > capacity:
 		# item's weight is too heavy to fit in knapsack.
-		return pack_decision(storage, knapsack, capacity)
+		return pack_bag(storage, knapsack, capacity)
 
 	else:
-		# imagine a reality where the current item is added in.
-		new_cap = capacity - item_weight
-		new_knapsack = knapsack.copy()
-		new_knapsack.add(item)
-		new_knapsack = pack_decision(storage, new_knapsack, new_cap)
+		# imagine a reality where the current item is kept in.
+		kept_bag = knapsack.copy()
+		kept_bag.add(item)
+		kept_bag = pack_bag(
+			storage, kept_bag, capacity - item_weight)
 		# imagine a reality where the current item is left out.
-		old_knapsack = pack_decision(storage, knapsack, capacity)
+		left_bag = pack_bag(
+			storage, knapsack, capacity)
 
-		# calculate total values of both backpacks.
+		# calculate total values of both knapsack.
+		# ==FIXME==
+		# here is a helper function to determine the total.
 		# its O(n), but can be easily improved with refactor.
 		def get_value(backpack):
+			'''
+			used word backpack to avoid confusion with knapsack.
+			'''
 			result = 0
 			for column in (row[1] for row in backpack):
 				result += column
 			return result
+
 		# use function call to calculate sums.
-		old_value = get_value(old_knapsack)
-		new_value = get_value(new_knapsack)
-		print("CHECK IT")
-		print(old_value)
-		print(new_value)
+		kept_in_value = get_value(kept_bag)
+		left_out_value = get_value(left_bag)
 
-		# check which scenario is better.
-		if new_value >= old_value:
-			# knapsack.add(item)
-			# capacity -= item_weight
-			return new_knapsack
-
-		elif new_value < old_value:
-			return old_knapsack
+		# this is where we decide whether to add the item in.
+		if kept_in_value >= left_out_value:
+			# the knapsack is better with the item kept in!
+			return kept_bag
+		elif kept_in_value < left_out_value:
+			# the knapsack is better with the item left out...
+			return left_bag
 
 
 if __name__ == '__main__':
@@ -85,11 +87,11 @@ if __name__ == '__main__':
 		('first aid', 70, 15),
 	}
 
-	# # BUG this scenario does not work
 	# items = {
-	# 	('yesterday\'s trash', 1, 50),
-	# 	('silver ingot', 100, 100),
-	# 	('bag of gold coins', 98, 50),
+	# 	('yesterday\'s trash', 1, 25),
+	# 	('silver ingot', 100, 50),
+	# 	('bag of gold coins', 98, 25),
 	# }
+
 	# sort the knapsack
-	sort_knapsack(items, capacity)
+	print(prepare_knapsack(items, capacity))
