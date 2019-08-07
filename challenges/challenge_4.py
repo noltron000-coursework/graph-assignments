@@ -97,13 +97,13 @@ if __name__ == '__main__':
 	# 	('bag of gold coins', 98, 25),
 	# }
 
-	# sort the knapsack
 	knapsack = prepare_knapsack(items, capacity)
-	
+
 	# get value
 	value = 0
 	for column in (row[1] for row in knapsack):
 		value += column
+
 	# get weight
 	weight = 0
 	for column in (row[2] for row in knapsack):

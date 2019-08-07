@@ -250,7 +250,9 @@ class Graph:
 		print(all_nodes)
 		
 		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
+		# ==HACK== flattens nested results
 		return set(tuple(sorted(item)) for item in result)
+
 
 	def get_deepest_clique(self, neighbors, valid_neighbors, visited):
 		'''
@@ -290,6 +292,10 @@ class Graph:
 				# function call
 				result = self.get_deepest_clique(
 					new_neighbors, new_valid_neighbors, new_visited)
+
+				# ==HACK==
+				# this part is pretty janky
+				# just trying to eliminate nested tuples
 				if isinstance(result, tuple):
 					if isinstance(result[0], tuple):
 						for real_result in result:
@@ -308,3 +314,14 @@ class Graph:
 			return visited
 		else:
 			return cliques
+
+
+	def validate_eulerian(self)
+		# run a depth-first search
+		# if the current node has the starting point as a neighbor:
+			# if every node has been visited:
+				# it is a valid eulerian cycle.
+			# if not every node has been visited:
+				# continue DFS until end.
+		# if DFS ends:
+			# it is not a valid eulerian cycle.
