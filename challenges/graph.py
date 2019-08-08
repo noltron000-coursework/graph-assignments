@@ -368,22 +368,10 @@ class Graph:
 
 		# check each neighbor
 		for neighbor in graph[vertex].edges:
-
-			# printiy verbose helps figure out what's happening.
-			verbose = (
-				'---\n'
-				f'   vertex: {vertex}\n'
-				f'     goal: {goal}\n'
-				f' neighbor: {neighbor}\n'
-				f'  visited: {visited}\n'
-				f'unvisited: {unvisited}'
-			)
-			# print(verbose)
-
-			# base case - there is a loop!
+			# base case ~ there is a loop!
 			if neighbor == goal and len(unvisited) == 0:
 				return True
-			# base case - neighbor was visited.
+			# base case ~ neighbor was visited.
 			elif neighbor in visited:
 				pass
 			# revisit function!!
