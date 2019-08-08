@@ -5,7 +5,8 @@ from graph import Graph
 
 
 def main(Object):
-	print(Object.eulerian_cycle())
+	boolean = str(Object.eulerian_cycle()).upper()
+	print(f'This graph is Eulerian: {boolean}')
 
 
 if __name__ == '__main__':
@@ -18,6 +19,6 @@ if __name__ == '__main__':
 		file = sys.argv[1]
 		output = main(Graph(file))
 
-	# there was a problem D:
+	# there was a problem!
 	else:
 		raise
