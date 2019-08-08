@@ -316,12 +316,79 @@ class Graph:
 			return cliques
 
 
-	def validate_eulerian(self)
-		# run a depth-first search
-		# if the current node has the starting point as a neighbor:
-			# if every node has been visited:
-				# it is a valid eulerian cycle.
-			# if not every node has been visited:
-				# continue DFS until end.
-		# if DFS ends:
-			# it is not a valid eulerian cycle.
+
+	def eulerian_cycle(self):
+		# asdf
+		if len(self.graph['vertices']) != 0:
+			result = self.eulerian_traversal()
+			return result
+		else:
+			raise
+
+
+
+	def eulerian_traversal(self, visited=None, vertex=None, goal=None):
+		'''
+			This is a "Depth-First Search" algorithm.
+			Traverse this binary tree recursively, pre-order.
+			To do so, visit the given node.
+			Then, visit it's left & right children.
+			---
+			best & worst case runtime: O(n)
+			--> we must traverse every node to visit them all.
+			~~~
+			best & worst case memory usage: O(1)
+			--> there is hardly any memory usage - its really 
+			    contingent on whatever visit(node) does.
+			--> note that, being recursive, it could be O(ln(n))
+			    TODO ↑ this above statement is important, read into
+		'''
+		# the graph is a collection of vertices.
+		graph = self.graph['vertices']
+
+		# initialize variables on first function call
+		if not visited:
+			# visited stores all visited items; starts empty.
+			visited = set()
+
+		# create a copy of visited list; original must be kept
+		visited = visited.copy()
+
+		# create the goal if it doesn't exist.
+		if not vertex and not goal:
+			# the 1st vertex is some random vertex on the graph.
+			vertex = next(iter(graph))
+			# the goal is just the starting vertex!
+			goal = vertex
+
+		# visit current vertex by adding it.
+		visited.add(vertex)
+		# create a selection of unvisited vertices
+		unvisited = set(list(graph.keys())) - visited
+
+		# check each neighbor
+		for neighbor in graph[vertex].edges:
+
+			# printiy verbose helps figure out what's happening.
+			verbose = (
+				'---\n'
+				f'   vertex: {vertex}\n'
+				f'     goal: {goal}\n'
+				f' neighbor: {neighbor}\n'
+				f'  visited: {visited}\n'
+				f'unvisited: {unvisited}'
+			)
+			# print(verbose)
+
+			# base case - there is a loop!
+			if neighbor == goal and len(unvisited) == 0:
+				return True
+			# base case - neighbor was visited.
+			elif neighbor in visited:
+				pass
+			# revisit function!!
+			else:
+				return self.eulerian_traversal(visited, neighbor, goal)
+		# the loop finished. must have been a bad lead!
+		else:
+			return False

@@ -29,7 +29,7 @@ def pack_bag(storage, knapsack, capacity):
 	if capacity == 0 or len(storage) == 0:
 		return knapsack
 
-	# extract current item from storage
+	# extract a random current item from storage
 	item = storage.pop()
 	# create semantic names
 	item_name = item[0]
