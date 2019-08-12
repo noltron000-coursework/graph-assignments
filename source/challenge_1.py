@@ -3,7 +3,7 @@ import sys
 # internal projects
 from graph import Graph
 
-def main(Graph):
+def main(graph):
 	'''
 	CHALLENGE 1
 	-----------

@@ -7,13 +7,21 @@ from read_file import read_file, extract
 
 class Graph:
 	'''
+	this class creates a graph or digraph.
+	a graph is like a tree, but allows cycles and loops.
+	its methods allow certain checks and passes on the graph.
 	'''
 
 	def __init__(self, filepath=None):
 		'''
+		takes in an optional filepath.
+		if none is given, a user can input the filepath.
+		by the end of it all, the graph's parameters are found.
 		'''
+		# check up on the option param.
 		if not filepath:
 			filepath = input('input the filepath to a graph: ')
+		# run extract from read_file.
 		self.type, self.graph = extract(filepath)
 
 	def __repr__(self):
@@ -75,6 +83,12 @@ class Graph:
 		queue = [[A]] # HACK not a real queue
 		# create visited set, and start with vertex A
 		visited = {A}
+
+		# raise a key error if A or B is not in the dict.
+		if A not in self.graph:
+			raise KeyError(A)
+		if B not in self.graph:
+			raise KeyError(B)
 
 		while queue != []:
 			# dequeue first vertex
