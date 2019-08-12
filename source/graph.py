@@ -119,6 +119,8 @@ class Graph:
 
 	def shortest_path_bfs(self, start, finish):
 		'''
+		this finds the shortest path using breadth-first search.
+		---
 		start: given starting node
 		finish: given finishing node
 		between: arbitrary iterated node
@@ -162,6 +164,13 @@ class Graph:
 			# if it reaches the end without returning,
 			# start is on a graph island from finish.
 			return []
+
+	def shortest_path_dfs(self, start, finish):
+		'''
+		this returns a boolean based on whether two nodes
+		are connected (True) or disconnected (False).
+		'''
+		pass
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)

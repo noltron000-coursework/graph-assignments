@@ -4,25 +4,30 @@ import sys
 from graph import Graph
 
 
-def main(graph, A, B):
+def main(graph, start, finish):
 	'''
 	CHALLENGE 3
 	-----------
-	The vertices in a minimum weight path between the vertices and the weight of that path.
+	this function parses a graph from a special text file.
+	next, it finds the shortest path in this graph.
+	once this is done, a textual summary is returned.
+	the summary includes a few points:
+	- if there is a path that exists between start and finish.
+	- the vertices in the path that was found.
 	'''
 	# grab variables for our summary
-	shortest_path = graph.shortest_path_bfs(A,B)
-	# 
+	shortest_path = graph.shortest_path_bfs(start, finish)
+	# check true or false
 	if shortest_path != []:
 		path_exists = True
 	else:
 		path_exists = False
-	path_exists = str(path_exists).upper()
 
 	# summary is a multi-line output
 	summary = '' \
 	f'There exists a path between' \
-	f' vertex {A} and {B}: {path_exists}\n'
+	f' vertex {start} and {finish}:' \
+	f' {str(path_exists).upper()}\n'
 	# gotta check if the path even exists!
 	if path_exists:
 		summary += '' \
@@ -35,28 +40,24 @@ def main(graph, A, B):
 if __name__ == '__main__':
 	# no filepath -- ask for a string
 	if len(sys.argv) == 1:
-		A = input('input 1st node: ')
-		B = input('input 2nd node: ')
-		output = main(Graph(), A, B)
-
+		start = input('input 1st node: ')
+		finish = input('input 2nd node: ')
+		output = main(Graph(), start, finish)
 	elif len(sys.argv) == 2:
 		file = sys.argv[1]
-		A = input('input 1st node: ')
-		B = input('input 2nd node: ')
-		output = main(Graph(file), A, B)
-
+		start = input('input 1st node: ')
+		finish = input('input 2nd node: ')
+		output = main(Graph(file), start, finish)
 	elif len(sys.argv) == 3:
-		A = sys.argv[1]
-		B = sys.argv[2]
-		output = main(Graph(), A, B)
-
+		start = sys.argv[1]
+		finish = sys.argv[2]
+		output = main(Graph(), start, finish)
 	# looks like we got a filepath!
 	elif len(sys.argv) == 4:
 		file = sys.argv[1]
-		A = sys.argv[2]
-		B = sys.argv[3]
-		output = main(Graph(file), A, B)
-
+		start = sys.argv[2]
+		finish = sys.argv[3]
+		output = main(Graph(file), start, finish)
 	# there was a problem D:
 	else:
 		raise
