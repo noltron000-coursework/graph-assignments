@@ -7,5 +7,5 @@ if __name__ == '__main__':
 		graph = Graph('network.txt')
 	else:
 		graph = Graph()
-
+	# note that this prints EVERY clique in a graph
 	print(graph.find_largest_clique())

@@ -1,112 +1,30 @@
-# python packages
-from vertex import Vertex
 # internal projects
 import sys
 import re
-
-
+# python packages
+from vertex import Vertex
+from read_file import read_file, extract
 
 class Graph:
 	'''
 	'''
-
 
 	def __init__(self, filepath=None):
 		'''
 		'''
 		if not filepath:
 			filepath = input('input the filepath to a graph: ')
-		text_data = self.read_file(filepath)
-		self.graph = self.extract(text_data)
-
+		self.graph = {}
+		self.type, self.graph['vertices'] = extract(filepath)
 
 	def __repr__(self):
 		return str(self.graph)
 
-
-	def read_file(self, text_file_path):
-		'''
-		'''
-		text_data = []
-		# read file from the source
-		with open(text_file_path, 'r') as file:
-			text_data = file.readlines()
-		# clean text_data by stripping
-		for index, entry in enumerate(text_data):
-			text_data[index] = entry.strip()
-		return text_data
-
-
-	def extract(self, text_data):
-		'''
-		'''
-		graph = {}
-
-		# get graph type
-		graph_type = ''
-		if text_data[0].lower() == 'g':
-			graph_type = 'graph'
-		elif text_data[0].lower() == 'd':
-			graph_type = 'digraph'
-		else:
-			raise
-		graph['type'] = graph_type
-
-		# establish new vertices
-		vertex_dict = {}
-		vertex_list = text_data[1].split(',')
-		for vertex_id in vertex_list:
-			vertex_dict[str(vertex_id)] = Vertex(str(vertex_id))
-		graph['vertices'] = vertex_dict
-
-		# populate vertices with edge data
-		edge_list = text_data[2:]
-		# loop through every edge
-		for index, edge in enumerate(edge_list):
-			# ensure edge starts as expected
-			assert('(' in edge)
-			assert(')' in edge)
-			# clean edge
-			edge = re.sub(r'[\(\)]', '', edge)
-			edge = edge.split(',')
-			# vertex_a_id/_b_id are just string ids
-			vertex_a_id = str(edge[0])
-			vertex_b_id = str(edge[1])
-			# these are actual vertex objects
-			VertexA = graph['vertices'][vertex_a_id]
-			VertexB = graph['vertices'][vertex_b_id]
-
-			# edge has no weight
-			if len(edge) == 2:
-				# add edge on main vertex
-				VertexA.add_edge(vertex_b_id)
-				# if this is not a digraph, add an edge back
-				if graph['type'] == 'graph':
-					VertexB.add_edge(vertex_a_id)
-
-			# edge is weighted
-			elif len(edge) == 3:
-				# the third item is the weight
-				weight = int(edge[2])
-				# add edge on both vertices
-				VertexA.add_edge(vertex_b_id, weight)
-				# if this is not a digraph, add an edge back
-				if graph['type'] == 'graph':
-					VertexB.add_edge(vertex_a_id, weight)
-
-			# unexpected length
-			else:
-				raise
-		return graph
-
-
 	def count_vertices(self):
 		return len(self.graph['vertices'])
 
-
 	def count_edges(self):
 		return len(self.get_edges())
-
 
 	def get_edges(self):
 		edge_list = []
@@ -250,7 +168,9 @@ class Graph:
 		print(all_nodes)
 		
 		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
+		# ==HACK== flattens nested results
 		return set(tuple(sorted(item)) for item in result)
+
 
 	def get_deepest_clique(self, neighbors, valid_neighbors, visited):
 		'''
@@ -290,6 +210,10 @@ class Graph:
 				# function call
 				result = self.get_deepest_clique(
 					new_neighbors, new_valid_neighbors, new_visited)
+
+				# ==HACK==
+				# this part is pretty janky
+				# just trying to eliminate nested tuples
 				if isinstance(result, tuple):
 					if isinstance(result[0], tuple):
 						for real_result in result:
@@ -308,3 +232,65 @@ class Graph:
 			return visited
 		else:
 			return cliques
+
+	def eulerian_cycle(self):
+		# asdf
+		if len(self.graph['vertices']) != 0:
+			result = self.eulerian_traversal()
+			return result
+		else:
+			raise
+
+	def eulerian_traversal(self, visited=None, vertex=None, goal=None):
+		'''
+			This is a "Depth-First Search" algorithm.
+			Traverse this binary tree recursively, pre-order.
+			To do so, visit the given node.
+			Then, visit it's left & right children.
+			---
+			best & worst case runtime: O(n)
+			--> we must traverse every node to visit them all.
+			~~~
+			best & worst case memory usage: O(1)
+			--> there is hardly any memory usage - its really 
+			    contingent on whatever visit(node) does.
+			--> note that, being recursive, it could be O(ln(n))
+			    TODO ↑ this above statement is important, read into
+		'''
+		# the graph is a collection of vertices.
+		graph = self.graph['vertices']
+
+		# initialize variables on first function call
+		if not visited:
+			# visited stores all visited items; starts empty.
+			visited = set()
+
+		# create a copy of visited list; original must be kept
+		visited = visited.copy()
+
+		# create the goal if it doesn't exist.
+		if not vertex and not goal:
+			# the 1st vertex is some random vertex on the graph.
+			vertex = next(iter(graph))
+			# the goal is just the starting vertex!
+			goal = vertex
+
+		# visit current vertex by adding it.
+		visited.add(vertex)
+		# create a selection of unvisited vertices
+		unvisited = set(list(graph.keys())) - visited
+
+		# check each neighbor
+		for neighbor in graph[vertex].edges:
+			# base case ~ there is a loop!
+			if neighbor == goal and len(unvisited) == 0:
+				return True
+			# base case ~ neighbor was visited.
+			elif neighbor in visited:
+				pass
+			# revisit function!!
+			else:
+				return self.eulerian_traversal(visited, neighbor, goal)
+		# the loop finished. must have been a bad lead!
+		else:
+			return False
