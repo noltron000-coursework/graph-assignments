@@ -14,25 +14,24 @@ class Graph:
 		'''
 		if not filepath:
 			filepath = input('input the filepath to a graph: ')
-		self.graph = {}
-		self.type, self.graph['vertices'] = extract(filepath)
+		self.type, self.graph = extract(filepath)
 
 	def __repr__(self):
 		return str(self.graph)
 
 	def count_vertices(self):
-		return len(self.graph['vertices'])
+		return len(self.graph)
 
 	def count_edges(self):
 		return len(self.get_edges())
 
 	def get_edges(self):
 		edge_list = []
-		for vertex in self.graph['vertices']:
+		for vertex in self.graph:
 			# i_key is the starting vertex
 			i_key = vertex
 			# i_val is the edge list of i_key vertex
-			i_val = self.graph['vertices'][vertex]
+			i_val = self.graph[vertex]
 			for neighbor in i_val.edges:
 				# j_key is the list of neighboring vertices
 				j_key = neighbor
@@ -73,7 +72,7 @@ class Graph:
 		visited: set of visited vertices
 		vertices: every single vertex in the graph
 		'''
-		vertices = self.graph['vertices']
+		vertices = self.graph
 		# create vertex queue, and start with vertex A
 		queue = [[A]] # HACK not a real queue
 		# create visited set, and start with vertex A
@@ -103,7 +102,7 @@ class Graph:
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
-		vertices = self.graph['vertices']
+		vertices = self.graph
 		# create visited set, and visit vertex A
 		visited = {A}
 		# create vertex queue, and start with vertex A
@@ -164,7 +163,7 @@ class Graph:
 		'''
 		'''
 		# loop through every vertex in graph, named parent
-		all_nodes = self.graph['vertices']
+		all_nodes = self.graph
 		print(all_nodes)
 		
 		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
@@ -185,7 +184,7 @@ class Graph:
 			# add funciton call of node to clique list
 		# return clique list
 		'''
-		all_nodes = self.graph['vertices']
+		all_nodes = self.graph
 		# prepare return value
 		cliques = set()
 		BASE = True
@@ -235,7 +234,7 @@ class Graph:
 
 	def eulerian_cycle(self):
 		# asdf
-		if len(self.graph['vertices']) != 0:
+		if len(self.graph) != 0:
 			result = self.eulerian_traversal()
 			return result
 		else:
@@ -258,7 +257,7 @@ class Graph:
 			    TODO ↑ this above statement is important, read into
 		'''
 		# the graph is a collection of vertices.
-		graph = self.graph['vertices']
+		graph = self.graph
 
 		# initialize variables on first function call
 		if not visited:

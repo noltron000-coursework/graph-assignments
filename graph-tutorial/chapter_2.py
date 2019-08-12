@@ -13,4 +13,4 @@ if __name__ == '__main__':
 	else:
 		raise
 
-	print(graph.graph['vertices'][A])
+	print(graph.graph[A])
