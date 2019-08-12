@@ -117,50 +117,50 @@ class Graph:
 		# return final value without extra end spaces.
 		return final_string.strip()
 
-	def shortest_path_bfs(self, A, B):
+	def shortest_path_bfs(self, start, finish):
 		'''
-		A = given starting node
-		B = given finishing node
-		C = arbitrary iterated node
+		start = given starting node
+		finish = given finishing node
+		between = arbitrary iterated node
 		queue:
 		visited: set of visited vertices
 		vertices: every single vertex in the graph
 		'''
 		vertices = self.graph
-		# create vertex queue, and start with vertex A
-		queue = [[A]] # HACK not a real queue
-		# create visited set, and start with vertex A
-		visited = {A}
+		# create vertex queue, and start with vertex start
+		queue = [[start]] # HACK not a real queue
+		# create visited set, and start with vertex start
+		visited = {start}
 
-		# raise a key error if A or B is not in the dict.
-		if A not in self.graph:
-			raise KeyError(A)
-		if B not in self.graph:
-			raise KeyError(B)
+		# raise a key error if start or finish is not in the dict.
+		if start not in self.graph:
+			raise KeyError(start)
+		if finish not in self.graph:
+			raise KeyError(finish)
 
 		while queue != []:
 			# dequeue first vertex
 			# HACK change later for non-array
-			a_list = queue.pop()
-			A = a_list[-1]
+			start_list = queue.pop()
+			start = start_list[-1]
 			# check a condition
-			if A == B:
-				return a_list
+			if start == finish:
+				return start_list
 			# add its neighbors to the queue
-			for C in vertices[A].edges:
-				if C in visited:
+			for between in vertices[start].edges:
+				if between in visited:
 					pass
 				else:
 					# visit the vertex
-					visited.add(C)
+					visited.add(between)
 					# HACK change later for non-array
-					c_list = a_list[:]
-					c_list.append(C)
-					queue.insert(0, c_list)
+					between_list = start_list[:]
+					between_list.append(between)
+					queue.insert(0, between_list)
 			else:
 				# if it reaches the end without returning,
-				# A is on a graph island from B.
-				raise ValueError(f'[{A}] is isolated from [{B}]!')
+				# start is on a graph island from finish.
+				raise ValueError(f'[{start}] is isolated from [{finish}]!')
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
