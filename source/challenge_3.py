@@ -16,7 +16,7 @@ def main(graph, start, finish):
 	- the vertices in the path that was found.
 	'''
 	# grab variables for our summary
-	shortest_path = graph.shortest_path_bfs(start, finish)
+	shortest_path = graph.shortest_path_dfs(start, finish)
 	# check true or false
 	if shortest_path != []:
 		path_exists = True
