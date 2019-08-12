@@ -7,7 +7,7 @@ from graph import Graph
 
 def main(Object):
 	# grab variables for our summary
-	graph_type = Object.graph['type']
+	graph_type = Object.type
 	edge_count = Object.count_edges()
 	vert_count = Object.count_vertices()
 	edge_list  = Object.textify_edges()

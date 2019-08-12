@@ -36,7 +36,7 @@ class Graph:
 				# j_key is the list of neighboring vertices
 				j_key = neighbor
 				# check if this vertex combo is worth adding
-				if j_key >= i_key or self.graph['type'] == 'digraph':
+				if j_key >= i_key or self.type == 'digraph':
 					# j_val is the weight of the edge
 					j_val = i_val.edges[j_key]
 					# check if this graph has weights
