@@ -136,9 +136,9 @@ class Graph:
 		visited = {start}
 
 		# raise a key error if start or finish is not in the dict.
-		if start not in self.graph:
+		if start not in vertices:
 			raise KeyError(start)
-		if finish not in self.graph:
+		if finish not in vertices:
 			raise KeyError(finish)
 
 		while queue != []:
@@ -165,12 +165,57 @@ class Graph:
 			# start is on a graph island from finish.
 			return []
 
-	def shortest_path_dfs(self, start, finish):
+	def shortest_path_dfs(self, start, finish, path=None):
 		'''
 		this returns a boolean based on whether two nodes
 		are connected (True) or disconnected (False).
 		'''
-		pass
+		vertices = self.graph
+		if not path:
+			path = [start]
+
+		# raise key error if start/finish are not in vertices.
+		if start not in vertices:
+			raise KeyError(start)
+		if finish not in vertices:
+			raise KeyError(finish)
+
+		# asdf
+		for between in vertices[start].edges:
+			if between == finish:
+				path.append(between)
+				return path
+			elif between in path:
+				pass
+			else:
+				new_path = path.copy()
+				new_path.append(between)
+				new_path = self.shortest_path_dfs(between, finish, new_path)
+				if new_path != []:
+					return new_path
+		else:
+			return []
+
+	'''
+		def dfs(vtx):
+			if vtx not in visited and self.vertices[vtx_B] not in visited:
+				path.append(vtx.id)
+				visited.add(vtx)
+				for neighbor in vtx.get_neighbors():
+					dfs(neighbor)
+			return path
+
+		# call dfs starting with vtx_A
+		dfs_path = dfs(self.vertices[vtx_A])
+
+		# if the last element in the path is not vtx_B,
+		# there is no path to vtx_B, return []
+		if dfs_path[-1] != vtx_B:
+			return []
+
+		# otherwise return the dfs path
+		return dfs_path
+	'''
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
