@@ -157,7 +157,10 @@ class Graph:
 					c_list = a_list[:]
 					c_list.append(C)
 					queue.insert(0, c_list)
-		return []
+			else:
+				# if it reaches the end without returning,
+				# A is on a graph island from B.
+				raise ValueError(f'[{A}] is isolated from [{B}]!')
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
