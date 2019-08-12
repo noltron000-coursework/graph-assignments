@@ -34,10 +34,10 @@ if __name__ == '__main__':
 	# no filepath.
 	if len(sys.argv) == 1:
 		output = main(Graph())
-	# there was a problem D:
 	# looks like we got a filepath!
 	elif len(sys.argv) == 2:
 		output = main(Graph(sys.argv[1]))
+	# there was a problem D:
 	else:
 		raise ValueError(
 			'too many arguments...'
