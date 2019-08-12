@@ -157,10 +157,10 @@ class Graph:
 					between_list = start_list[:]
 					between_list.append(between)
 					queue.insert(0, between_list)
-			else:
-				# if it reaches the end without returning,
-				# start is on a graph island from finish.
-				raise ValueError(f'[{start}] is isolated from [{finish}]!')
+		else:
+			# if it reaches the end without returning,
+			# start is on a graph island from finish.
+			raise ValueError(f'[{start}] is isolated from [{finish}]!')
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)

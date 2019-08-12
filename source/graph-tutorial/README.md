@@ -100,7 +100,6 @@ def get_neighbors(self):
 All right, no more surprise connections for us! But what if we want to go even _further_ than one connection? Onward!
 
 ## Chapter 3: Breadth of Fresh Neighbors
-
 How does Facebook or LinkedIn know what friends to recommend to you? They look at who your friends are friends with, and who their friends are friends with, and so on
 
 ![two friends](https://media1.giphy.com/media/r73emnWNwTWRq/giphy.gif)
@@ -161,7 +160,6 @@ This works, but what if there are multiple paths between two nodes? What if one 
 If you were trying to show how two people are socially connected, you would want to do so in the least number of connections possible. Can you imagine if LinkedIn couldn't determine if someone was a 2nd or 20th degree connection?
 
 ### Shortest Path
-
 In order to solve this problem, we want to find the **shortest path** between two nodes in a graph.
 
 **Challenge 1:** Write a method `find_shortest_path(self, A, B)` that takes two nodes (A and B) as input, and outputs the list of nodes that make up the _shortest path_ from A to B. The output list of nodes _must be in order of nodes visited starting from A and ending at B._
@@ -185,8 +183,8 @@ As with any large group of people, smaller groups start to form within the large
 Find “cliques” of friends (small groups of tightly-connected users), etc…
 
 The [clique problem](https://en.wikipedia.org/wiki/Clique_problem) is a popular computational problem in computer science.
-### Clique Discovery
 
+### Clique Discovery
 Among other applications, the clique problem can arise in a social network. With our social network, a clique will represent a subset of people (nodes) who all know each other (share edges), and we can use various algorithms to find these cliques.
 
 **Challenge:** Write a method `clique(self)` that finds a clique in a graph that cannot have any other vertices added to it (note this is called a *maximal* clique).
@@ -201,7 +199,6 @@ For v in remaining vertices not in the clique
 If v is adjacent to every other vertex already in the clique.
 	Add v to the clique
 	Discard v otherwise
-
 ```
 
 # Stretch Challenges
@@ -229,14 +226,13 @@ def diameter(self):
 - A radius of a graph _must_ also have a diameter.
 - Radius can be calculated by finding the minimum distance among all the maximum distances between a node to all other nodes
 - The center of a graph is the set of all nodes where the greatest distance to other nodes is the shortest.
-		- Read up on [eccentricity](https://en.wikipedia.org/wiki/Distance_(graph_theory) to help with this!
+	- Read up on [eccentricity](https://en.wikipedia.org/wiki/Distance_(graph_theory) to help with this!
 
 ## STRETCH : Chapter 8: How to Win Friends and Influence Users
 Google's [PageRank](https://en.wikipedia.org/wiki/PageRank) algorithm is what they use to show you the most relevant search results for your query. Through this and other factors, Google influences what you see on that first page every single time you search something (and how often are you going past the first page?)
 
 
 ### PageRank Your Friends
-
 PageRank is currently implemented using concepts from graph theory, assigning scores of "relevance" to links. We're going to model that by doing the same thing to our social networks (what, you've never ranked your friends before?). _This is how social media influence is calculated!_ Let's find out which of our friends have the most influence in the network.
 
 The algorithm for PageRank uses an iterative approach, where each iteration improves our _approximation_ of the true PageRank value. For determining the importance of web pages, the rankings become stable after around 30-40 iterations. But for our much smaller graphs, the rankings will likely become stable after just a few iterations.
@@ -267,7 +263,6 @@ def influencer(self):
 **Congrats on completing your journey through your Social Network!**
 
 ### Feedback and Review - 2 minutes
-
 **We promise this won't take longer than 2 minutes!**
 
 Please take a moment to rate your understanding of the learning outcomes from this tutorial, and how we can improve it via our [tutorial feedback form](https://forms.gle/Wva3u51vBiDQHBAw9)
