@@ -119,10 +119,11 @@ class Graph:
 
 	def shortest_path_bfs(self, start, finish):
 		'''
-		start = given starting node
-		finish = given finishing node
-		between = arbitrary iterated node
-		queue:
+		start: given starting node
+		finish: given finishing node
+		between: arbitrary iterated node
+		---
+		queue: an in-order line of vertices to visit
 		visited: set of visited vertices
 		vertices: every single vertex in the graph
 		'''
@@ -160,7 +161,7 @@ class Graph:
 		else:
 			# if it reaches the end without returning,
 			# start is on a graph island from finish.
-			raise ValueError(f'[{start}] is isolated from [{finish}]!')
+			return []
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)

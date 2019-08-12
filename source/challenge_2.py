@@ -3,7 +3,7 @@ import sys
 # internal projects
 from graph import Graph
 
-def main(Graph, start, finish):
+def main(graph, start, finish):
 	'''
 	CHALLENGE 2
 	-----------
@@ -15,7 +15,14 @@ def main(Graph, start, finish):
 	- the number of edges in that path.
 	'''
 	# grab variables for our summary.
-	shortest_path = Graph.shortest_path_bfs(start, finish)
+	shortest_path = graph.shortest_path_bfs(start, finish)
+	# raise an error if the return is empty.
+	if shortest_path == []:
+		raise ValueError(
+			f'[{start}] is isolated from [{finish}]!'
+		)
+
+	# otherwise set up other values
 	shortest_edges = len(shortest_path)
 	shortest_path = ','.join(shortest_path)
 
