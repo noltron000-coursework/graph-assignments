@@ -48,7 +48,6 @@ class Graph:
 					edge_list.append(edge)
 		return edge_list
 
-
 	def textify_edges(self):
 		edge_list = self.get_edges()
 		final_string = ''
@@ -58,7 +57,6 @@ class Graph:
 			final_string += edge_string
 			final_string += ')\n'
 		return final_string.strip()
-
 
 	def shortest_path_bfs(self, A, B):
 		'''
@@ -98,7 +96,6 @@ class Graph:
 					c_list.append(C)
 					queue.insert(0, c_list)
 		return []
-
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)
@@ -158,7 +155,6 @@ class Graph:
 					good_final.append(good)
 		return good_final
 
-
 	def find_largest_clique(self):
 		'''
 		'''
@@ -169,7 +165,6 @@ class Graph:
 		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
 		# ==HACK== flattens nested results
 		return set(tuple(sorted(item)) for item in result)
-
 
 	def get_deepest_clique(self, neighbors, valid_neighbors, visited):
 		'''
