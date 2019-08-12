@@ -25,7 +25,26 @@ class Graph:
 		self.type, self.graph = extract(filepath)
 
 	def __repr__(self):
-		return str(self.graph)
+		'''
+		a graph has many fascets.
+		its important to properly represent them all.
+		this gives an overview of a graph's properties,
+		especially when printed to terminal.
+		'''
+		# grab variables for our summary.
+		graph_type = self.type
+		vert_count = self.count_vertices()
+		edge_count = self.count_edges()
+		edge_list  = self.textify_edges()
+
+		# summary is a multi-line output.
+		summary = '' \
+		f'Graph Type: {graph_type}\n' \
+		f'# Vertices: {vert_count}\n' \
+		f'# Edges: {edge_count}\n' \
+		f'Edge List:\n{edge_list}\n'
+
+		return summary
 
 	def count_vertices(self):
 		return len(self.graph)

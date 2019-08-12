@@ -14,21 +14,11 @@ def main(graph):
 	- the # edges in the graph.
 	- a list of the edges with their weights (if weighted).
 	'''
-	# grab variables for our summary.
-	graph_type = graph.type
-	edge_count = graph.count_edges()
-	vert_count = graph.count_vertices()
-	edge_list  = graph.textify_edges()
-
-	# summary is a multi-line output.
-	summary = '' \
-	f'Graph Type: {graph_type}\n' \
-	f'# Vertices: {vert_count}\n' \
-	f'# Edges: {edge_count}\n' \
-	f'Edge List:\n{edge_list}\n'
 
 	# return the summary.
-	return summary
+	# == NOTE ==
+	# __repr__ has been modified to give an expected output.
+	return graph
 
 if __name__ == '__main__':
 	# no filepath.
