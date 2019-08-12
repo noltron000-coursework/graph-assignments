@@ -14,10 +14,10 @@ def main(graph):
 	- the # edges in the graph.
 	- a list of the edges with their weights (if weighted).
 	'''
-
 	# return the summary.
 	# == NOTE ==
 	# __repr__ has been modified to give an expected output.
+	# thus, all we need to do is print the graph!
 	return graph
 
 if __name__ == '__main__':

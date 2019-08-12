@@ -47,12 +47,29 @@ class Graph:
 		return summary
 
 	def count_vertices(self):
+		'''
+		returns the number of vertices in the graph.
+		'''
 		return len(self.graph)
 
 	def count_edges(self):
+		'''
+		returns the number of edges in the graph.
+		'''
 		return len(self.get_edges())
 
 	def get_edges(self):
+		'''
+		retrieves every single edge in the graph.
+		in a digraph, pointing two ways counts as two edges.
+		in a graph, pointing two ways counts as just one edge.
+		this is due to the nature of these types of graphs.
+		---
+		i_key represents the root vertex
+		i_val lists all edges of i_key
+		j_key represents the neighbor vertex
+		j_val is the weight of the edge between i_key and j_key.
+		'''
 		edge_list = []
 		for vertex in self.graph:
 			# i_key is the starting vertex
@@ -76,13 +93,28 @@ class Graph:
 		return edge_list
 
 	def textify_edges(self):
+		'''
+		this function groups up each edge;
+		then represents them in a string.
+		---
+		each edge is represented by one of these:
+		(start, finish)
+		(start, finish, weight)
+		---
+		a digraph has both A->B and B->A if it goes two ways.
+		a graph has just A<->B to represent a two way edge.
+		'''
+		# get full list of edges from a helper function.
 		edge_list = self.get_edges()
+		# initialize empty return value
 		final_string = ''
+		# loop through all edges and clean them up
 		for edge in edge_list:
 			edge_string = ','.join(edge)
 			final_string += '('
 			final_string += edge_string
 			final_string += ')\n'
+		# return final value without extra end spaces.
 		return final_string.strip()
 
 	def shortest_path_bfs(self, A, B):
@@ -90,9 +122,6 @@ class Graph:
 		A = given starting node
 		B = given finishing node
 		C = arbitrary iterated node
-		a_list = 
-		b_list = 
-		c_list = 
 		queue:
 		visited: set of visited vertices
 		vertices: every single vertex in the graph
