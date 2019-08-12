@@ -14,7 +14,7 @@ def main(Graph):
 	- the # edges in the graph.
 	- a list of the edges with their weights (if weighted).
 	'''
-	# grab variables for our summary
+	# grab variables for our summary.
 	graph_type = graph.type
 	edge_count = graph.count_edges()
 	vert_count = graph.count_vertices()
@@ -31,15 +31,13 @@ def main(Graph):
 	return summary
 
 if __name__ == '__main__':
-	# looks like we got a filepath!
-	if len(sys.argv) == 2:
-		output = main(Graph(sys.argv[1]))
-
 	# no filepath.
-	elif len(sys.argv) == 1:
+	if len(sys.argv) == 1:
 		output = main(Graph())
-
 	# there was a problem D:
+	# looks like we got a filepath!
+	elif len(sys.argv) == 2:
+		output = main(Graph(sys.argv[1]))
 	else:
 		raise ValueError(
 			'too many arguments...'
