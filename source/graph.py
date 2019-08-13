@@ -65,29 +65,29 @@ class Graph:
 		in a graph, pointing two ways counts as just one edge.
 		this is due to the nature of these types of graphs.
 		---
-		i_key represents the root vertex
-		i_val lists all edges of i_key
-		j_key represents the neighbor vertex
-		j_val is the weight of the edge between i_key and j_key.
+		root_vrtx represents the root vertex
+		root_edges lists all edges of root_vrtx
+		edge_vrtx represents the neighbor vertex
+		edge_weight is the weight of the edge between root_vrtx and edge_vrtx.
 		'''
 		edge_list = []
 		for vertex in self.graph:
-			# i_key is the starting vertex
-			i_key = vertex
-			# i_val is the edge list of i_key vertex
-			i_val = self.graph[vertex]
-			for neighbor in i_val.edges:
-				# j_key is the list of neighboring vertices
-				j_key = neighbor
+			# root_vrtx is the starting vertex
+			root_vrtx = vertex
+			# root_edges is the edge list of root_vrtx vertex
+			root_edges = self.graph[vertex]
+			for neighbor in root_edges.edges:
+				# edge_vrtx is the list of neighboring vertices
+				edge_vrtx = neighbor
 				# check if this vertex combo is worth adding
-				if j_key >= i_key or self.type == 'digraph':
-					# j_val is the weight of the edge
-					j_val = i_val.edges[j_key]
+				if edge_vrtx >= root_vrtx or self.type == 'digraph':
+					# edge_weight is the weight of the edge
+					edge_weight = root_edges.edges[edge_vrtx]
 					# check if this graph has weights
-					if j_val:
-						edge = [i_key, j_key, j_val]
+					if edge_weight:
+						edge = [root_vrtx, edge_vrtx, edge_weight]
 					else:
-						edge = [i_key, j_key]
+						edge = [root_vrtx, edge_vrtx]
 					# add edge to edge_list
 					edge_list.append(edge)
 		return edge_list
