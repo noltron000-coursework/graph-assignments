@@ -43,18 +43,36 @@ For this problem I am going to make up a set of prices.
 
 | size | price |
 |------|-------|
-| 12"  | $8.00 |
-| 11"  | $7.00 |
-| 10"  | $6.00 |
-| 9"   | ~~$5.50~~ *$4.00* |
-| 8"   | $5.25 |
-| 7"   | $4.50 |
-| 6"   | $3.49 |
-| 5"   | $3.00 |
-| 4"   | $2.00 |
-| 3"   | $1.69 |
-| 2"   | $1.00 |
 | 1"   | $0.50 |
+| 2"   | $1.00 |
+| 3"   | $1.69 |
+| 4"   | $2.00 |
+| 5"   | $3.00 |
+| 6"   | $3.49 |
+| 7"   | $4.50 |
+| 8"   | $5.25 |
+| 9"   | ~~$5.50~~ *$4.00* |
+| 10"  | $6.00 |
+| 11"  | $7.00 |
+| 12"  | $8.00 |
+
+```py
+# create a dictionary of sub sizes with prices.
+base_subs = {
+	1:  0.50,
+	2:  1.00, 
+	3:  1.69,
+	4:  2.00,
+	5:  3.00,
+	6:  3.49,
+	7:  4.50,
+	8:  5.25,
+	9:  4.00,
+	10: 6.00,
+	11: 7.00,
+	12: 8.00,
+}
+```
 
 In order to make this problem make sense, each sub has an unevenly distributed increase in price. For example the difference between a 3" and 4" sub is different than the difference between a 6" and 7". Note that this sandwich shop's prices are purposefully unrealistic and exploitable &mdash; due to the nature of this problem.
 
