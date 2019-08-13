@@ -180,42 +180,26 @@ class Graph:
 		if finish not in vertices:
 			raise KeyError(finish)
 
-		# asdf
+		# iterate through neighbors.
 		for between in vertices[start].edges:
+			# check if between is the finish line.
 			if between == finish:
 				path.append(between)
 				return path
+			# check if between is already in path.
 			elif between in path:
 				pass
+			# otherwise recursively call the new path.
 			else:
 				new_path = path.copy()
 				new_path.append(between)
 				new_path = self.shortest_path_dfs(between, finish, new_path)
+				# if its not empty, its a success!
 				if new_path != []:
 					return new_path
+		# if it finishes, well, no path is found!
 		else:
 			return []
-
-	'''
-		def dfs(vtx):
-			if vtx not in visited and self.vertices[vtx_B] not in visited:
-				path.append(vtx.id)
-				visited.add(vtx)
-				for neighbor in vtx.get_neighbors():
-					dfs(neighbor)
-			return path
-
-		# call dfs starting with vtx_A
-		dfs_path = dfs(self.vertices[vtx_A])
-
-		# if the last element in the path is not vtx_B,
-		# there is no path to vtx_B, return []
-		if dfs_path[-1] != vtx_B:
-			return []
-
-		# otherwise return the dfs path
-		return dfs_path
-	'''
 
 	def nth_degree_neighbors(self, A, N):
 		N = int(N)

@@ -18,8 +18,6 @@ def prepare_knapsack(items, capacity):
 	# as our knapsack fills up, its capacity will decrease.
 	return pack_bag(storage, knapsack, capacity)
 
-
-
 def pack_bag(storage, knapsack, capacity):
 	# needed to keep things in check
 	storage = storage.copy()
@@ -51,7 +49,7 @@ def pack_bag(storage, knapsack, capacity):
 			storage, knapsack, capacity)
 
 		# calculate total values of both knapsack.
-		# ==FIXME==
+		# == FIXME ==
 		# here is a helper function to determine the total.
 		# its O(n), but can be easily improved with refactor.
 		def get_value(backpack):
@@ -75,8 +73,6 @@ def pack_bag(storage, knapsack, capacity):
 			# the knapsack is better with the item left out...
 			return left_bag
 
-
-
 if __name__ == '__main__':
 	
 	# a given capacity of the knapsack
@@ -90,12 +86,6 @@ if __name__ == '__main__':
 		('water', 120, 30),
 		('first aid', 70, 15),
 	}
-
-	# items = {
-	# 	('yesterday\'s trash', 1, 25),
-	# 	('silver ingot', 100, 50),
-	# 	('bag of gold coins', 98, 25),
-	# }
 
 	knapsack = prepare_knapsack(items, capacity)
 

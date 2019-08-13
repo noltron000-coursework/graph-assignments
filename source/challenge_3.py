@@ -3,7 +3,6 @@ import sys
 # internal projects
 from graph import Graph
 
-
 def main(graph, start, finish):
 	'''
 	CHALLENGE 3
@@ -35,7 +34,6 @@ def main(graph, start, finish):
 
 	# return the summary
 	return summary
-
 
 if __name__ == '__main__':
 	# no filepath -- ask for a string
