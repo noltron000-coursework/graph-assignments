@@ -67,8 +67,8 @@ class Graph:
 		---
 		root_vrtx represents the root vertex
 		root_edges lists all edges of root_vrtx
-		edge_vrtx represents the neighbor vertex
-		edge_weight is the weight of the edge between root_vrtx and edge_vrtx.
+		ngbr_vrtx represents the neighbor vertex
+		edge_weight is the weight of the edge
 		'''
 		edge_list = []
 		for vertex in self.graph:
@@ -76,18 +76,16 @@ class Graph:
 			root_vrtx = vertex
 			# root_edges is the edge list of root_vrtx vertex
 			root_edges = self.graph[vertex]
-			for neighbor in root_edges.edges:
-				# edge_vrtx is the list of neighboring vertices
-				edge_vrtx = neighbor
+			for ngbr_vrtx in root_edges.edges:
 				# check if this vertex combo is worth adding
-				if edge_vrtx >= root_vrtx or self.type == 'digraph':
+				if ngbr_vrtx >= root_vrtx or self.type == 'digraph':
 					# edge_weight is the weight of the edge
-					edge_weight = root_edges.edges[edge_vrtx]
+					edge_weight = root_edges.edges[ngbr_vrtx]
 					# check if this graph has weights
 					if edge_weight:
-						edge = [root_vrtx, edge_vrtx, edge_weight]
+						edge = [root_vrtx, ngbr_vrtx, edge_weight]
 					else:
-						edge = [root_vrtx, edge_vrtx]
+						edge = [root_vrtx, ngbr_vrtx]
 					# add edge to edge_list
 					edge_list.append(edge)
 		return edge_list
