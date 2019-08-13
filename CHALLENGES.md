@@ -2,7 +2,7 @@
 All graphs challenges are located in this repo from the challenges folder.
 
 ## Challenge 5
-### *Knapsack Problem*
+### Knapsack Problem
 #### Explaination
 <small>Clearly define the problem. Give full credit to any references you use.</small>
 
@@ -36,4 +36,4 @@ This is why dynamic programming would make sense here. We have to consider the c
 - [Geeks for Geeks](https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/)
 - [dev.to](https://dev.to/downey/solving-the-knapsack-problem-with-dynamic-programming-4hce)
 
-### 
+### Other DP Problem
