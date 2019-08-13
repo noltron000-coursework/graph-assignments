@@ -1,3 +1,2 @@
-# Graph
-## Challenges
-Check out the [challenges readme](./CHALLENGES.md). Do note that this contains important information for challenge 5!
+# Graphs Project
+For more details, check out [challenges](./source/challenges/INSTRUCTIONS.md) and [tutorial](./source/tutorial/INSTRUCTIONS.md)
