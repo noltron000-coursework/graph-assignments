@@ -1,13 +1,24 @@
 # python packages
+import os
 import sys
+import inspect
+
+# get reference of current directory.
+currentdir = os.path.dirname(
+	os.path.abspath(
+		inspect.getfile(
+			inspect.currentframe())))
+# get reference of parent directory.
+parentdir = os.path.dirname(currentdir)
+# pull contents from parent directory into current.
+sys.path.insert(0, parentdir) 
+
 # internal projects
 from graph import Graph
-
 
 def main(Object):
 	boolean = str(Object.eulerian_cycle()).upper()
 	print(f'This graph is Eulerian: {boolean}')
-
 
 if __name__ == '__main__':
 	# no filepath -- ask for a string
