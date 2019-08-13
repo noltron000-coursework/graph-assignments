@@ -11,7 +11,7 @@ currentdir = os.path.dirname(
 # get reference of parent directory.
 parentdir = os.path.dirname(currentdir)
 # pull contents from parent directory into current.
-sys.path.insert(0, parentdir) 
+sys.path.insert(0, parentdir)
 
 # internal projects
 from graph import Graph
