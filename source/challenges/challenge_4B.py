@@ -5,16 +5,40 @@
 import itertools
 
 def prep_order(selected_size, original_menu):
+	'''
+	the helper function, divide_sandwich, keeps track of 
+	the most difficult processes in this function.
+	---
+	however, do notice that the original menu
+	and the selected size are used but never changed
+	within the helper function itself.
+	---
+	== INPUT ==
+	- a sandwich size
+	- a menu of sandwich sizes with prices
+	== OUTPUT ==
+	- an improved cheap menu with deferred sizes and counts.
+	EX. a 12" sub can be represented by an 8" and two 2" subs.
+	'''
 	def divide_sandwich(menu):
 		'''
-		input:
-		the size of the desired sub, and the menu
-			an array of prices with indexes that correlate to the size of the pieces of wood.
-		an integer of the length of the wood to be cut.
-			Output:
-				a string of the inputs and the resulting max cost that can be made from the length of the wood and the prices.
+		== INPUT == 
+		this helper function simply requires a menu object.
+		the menu object should start as an empty dictionary
+		for this function to run its course correctly.
+		== OUTPUT == 
+		the object that this function outputs is a bit deep.
+		it includes all the sub sizes, associated with their
+		best price, and the subs deferred to make this price.
+		it will even keep track of the count of each sub size.
 		== NOTE ==
-		this function was inspired by Jamie McCrory's code.
+		this function was inspired by Jamie McCrory's code,
+		and the problem that his code was inspired by.
+		check out his github here:
+		https://github.com/jamiejamiebobamie/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/challenges/challenge4/part2.py
+		---
+		additionally, this code took some inspiration from
+		some in class activities having to do with sandwiches.
 		'''
 		# discover which menu items are still untouched.
 		unvisited = set(original_menu) - set(menu)
