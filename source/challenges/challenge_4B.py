@@ -1,94 +1,61 @@
-def prep_order(menu, desired_size, order=None, check=None):
-	if order is None:
-		# the sandwich order will usually start empty.
-		order = {}
-	else:
-		# an order object is given, in size:count pairs.
-		# these items must be included with the final order.
-		pass
+# -XXX-XXX-
+# NOTE: this code was pulled from Jamie McCrory's repo.
+# check it out here: https://github.com/jamiejamiebobamie/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/challenges/challenge4/part2.py
+# -XXX-XXX-
 
-	if check is None:
-		# this is a list of subs that are no longer considered.
-		# usually it will start empty unless some are a no-go.
-		check = set()
-	else:
-		pass
+def driver_function(prices,n):
+	"""
+	The driver holds the lookup dictionary and makes the original function call to rodcut function.
+	"""
+	dict = {}
 
-	order = pack_order(menu, desired_size, order, check)
-	return order
+	def rodcut(prices,n):
+		"""
+			Note:
+				this function was found in C++ on: https://www.techiedelight.com/rot-cutting/
+			Input:
+				an array of prices with indexes that correlate to the size of the pieces of wood.
+				an integer of the length of the wood to be cut.
+			Output:
+				a string of the inputs and the resulting max cost that can be made from the length of the wood and the prices.
+		"""
+		# each time the function gets called initialize maxValue to be negative infinity
+		maxValue = float('-inf')
 
-def pack_order(menu, desired_size, order, check):
-	# the sandwich order starts empty.
-	if order is None:
-		order = {}
+		# return 0 if the input length of the rod is 0 or if the input length is greater than the array as that will throw list index out of range errors below
+		if n == 0 or len(prices) <= n:
+			return 0
 
-	print('\nNEW RECURSION')
-	print('=============\n')
-	print(order)
-	print(desired_size)
+		# generate numbers between 1 and the current rod_length + 1 (+1 because range() is non-inclusive at the upper bounds)
+		for _ in range(1, n+1):
 
-	# base case - order_size is filled to match sub_size.
-	if desired_size == 0:
-		print("HOORAY")
-		print(order)
-		return order
+			# set 'entry' to a tuple of the current cut. a cut consists of two pieces.
+			# cut == piece A and piece B: A is: _ and piece B is: the length of the rod - piece A.
+			cut = (_, n-_)
 
-	elif desired_size < 0:
-		print("BOOO")
-		print(order)
-		return order
-
-	def get_order_price(my_order):
-		order_price = 0
-		for size in my_order:
-			count = my_order[size]
-			price = menu[size]
-			order_price += count * price
-		return order_price
-
-	# must iterate through every size in menu...
-	for size in menu:
-		if size not in check:
-			price = menu[size]
-
-			# imagine a reality where this sub size is kept in.
-			kept_order = order.copy()
-			kept_check = check.copy()
-			if kept_order.get(size) is None:
-				kept_order[size] = 1
+			# memoization dictionary:
+			if cut in dict:
+				cost = dict[cut]
 			else:
-				kept_order[size] += 1
-			kept_size = desired_size - size
-			# recursively call and grab price.
-			kept_order = pack_order(
-				menu, kept_size, kept_order, kept_check)
-			kept_price = get_order_price(kept_order)
+			# reference the price for piece A, taking into account the index of piece A will be: _-1
+			# need to determine the cost(s) of all pieces resulting from that cut.
+			# so piece B is fed into "the wood chipper": the rodCut function, to determine its cost(s)
+				cost = prices[_-1] + rodcut(prices, n - _)
+				dict[cut] = cost
 
-			# imagine a reality where this sub size is left out.
-			left_order = order.copy()
-			left_check = check.copy()
-			left_check.add(size)
-			left_size = desired_size
-			# recursively call and grab price.
-			left_order = pack_order(
-				menu, left_size, left_order, left_check)
-			left_price = get_order_price(left_order)
+			# if the resuting cost is greater than the local maxValue set the local maxValue to the cost
+			if (cost > maxValue):
+				maxValue = cost
+
+		# return the maxValue to the outside scope.
+		return maxValue
+
+	maxValue = rodcut(prices,n)
+	printable_prices = [str(price) for price in prices]
+
+	return "For this input:\n\n"+ "prices: " + ", ".join(printable_prices) + "\nwood length: " + str(n) + "\n\nThe solution is:\n\n" + str(maxValue)
+
 			
-			# decide which order to keep, left or kept.
-			if left_price <= kept_price or kept_size < 0:
-				# recursively call function
-				return left_order
-
-			elif left_price > kept_price:
-				# recursively call function
-				return kept_order
-			else:
-				raise
-		else:
-			pass
-	else:
-		raise
-	
 
 if __name__ == '__main__':
 	# create a dictionary of sub sizes with prices.
@@ -108,4 +75,4 @@ if __name__ == '__main__':
 	}
 	size = 12
 
-	print(prep_order(menu, size))
+	print(prep_order(size, menu))
