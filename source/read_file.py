@@ -46,6 +46,8 @@ def get_vertices(text_data):
 	a single character usually represents a vertices' key.
 	the vertex object itself is the full data or value here.
 	'''
+	if len(text_data) == 1:
+		return {}
 	# initialize empty return value.
 	vertex_dict = {}
 	# clean up the given vertex list string.

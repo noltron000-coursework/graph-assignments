@@ -166,16 +166,20 @@ class Graph:
 			# start is on a graph island from finish.
 			return []
 
-	def shortest_path_dfs(self, start, finish, path=None):
+	def shortest_path_dfs(self, start, finish, path=None, solutions=None):
 		'''
 		this returns a boolean based on whether two nodes
 		are connected (True) or disconnected (False).
 		'''
 		vertices = self.graph
+		if not solutions:
+			solutions = []
+		else:
+			solutions = solutions.copy()
 		if not path:
 			path = [start]
 
-		# raise key error if start/finish are not in vertices.
+		# raise key error if start/finish are not vertices.
 		if start not in vertices:
 			raise KeyError(start)
 		if finish not in vertices:
@@ -186,7 +190,7 @@ class Graph:
 			# check if between is the finish line.
 			if between == finish:
 				path.append(between)
-				return path
+				solutions.append(path)
 			# check if between is already in path.
 			elif between in path:
 				pass
@@ -194,15 +198,32 @@ class Graph:
 			else:
 				new_path = path.copy()
 				new_path.append(between)
-				new_path = self.shortest_path_dfs(between, finish, new_path)
+				new_path = self.shortest_path_dfs(between, finish, new_path, solutions)
 				# if its not empty, its a success!
 				if new_path != []:
-					return new_path
-		# if it finishes, well, no path is found!
-		else:
+					solutions.append(new_path)
+
+		# we now have an array of our solutions.
+		if len(solutions) == 0:
+			# there is no solution :(
 			return []
+		else:
+			# we have many solutions.
+			# pick the shortest one!
+			min_path = min(solutions, key=lambda x: len(x))
+			return min_path
 
 	def nth_degree_neighbors(self, A, N):
+		'''
+		given a node, this function finds every neighbor
+		that is no closer than n steps away, 
+		but is not further than n steps away.
+		---
+		its worded this way to show that, if your neighbor 
+		is next door, you can't say they are 100 miles away 
+		by driving 100 miles in a circle to their house.
+		they are considered just next door.
+		'''
 		N = int(N)
 		vertices = self.graph
 		# create visited set, and visit vertex A
@@ -267,22 +288,13 @@ class Graph:
 		all_nodes = self.graph
 		print(all_nodes)
 		
-		result = self.get_deepest_clique(all_nodes, set(all_nodes), set())
+		result = self.get_deepest_clique(
+			all_nodes, set(all_nodes), set())
 		# ==HACK== flattens nested results
 		return set(tuple(sorted(item)) for item in result)
 
 	def get_deepest_clique(self, neighbors, valid_neighbors, visited):
 		'''
-		# for all children
-			# every child must also be a sibling or it is not valid
-		# for all siblings
-			# every sibling must also be a child or it is not valid
-		# we should have valid nodes ripe for a new function
-		# create a clique list
-		# for each valid, unvisited node
-			# visit the node before function call
-			# add funciton call of node to clique list
-		# return clique list
 		'''
 		all_nodes = self.graph
 		# prepare return value
@@ -349,7 +361,7 @@ class Graph:
 			# if the loop ends, it is eulerian.
 			return True
 
-	def eulerian_cycle(self):
+	def loop_cycle(self):
 		# asdf
 		if len(self.graph) != 0:
 			result = self.eulerian_recycle()
@@ -357,7 +369,7 @@ class Graph:
 		else:
 			raise
 
-	def eulerian_recycle(self, visited=None, vertex=None, goal=None):
+	def loop_recycle(self, visited=None, vertex=None, goal=None):
 		'''
 		This is a "Depth-First Search" algorithm.
 		Traverse this binary tree recursively, pre-order.
