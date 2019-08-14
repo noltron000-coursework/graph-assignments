@@ -366,10 +366,10 @@ class Graph:
     def loop_cycle(self):
         # asdf
         if len(self.graph) != 0:
-            result = self.eulerian_recycle()
+            result = self.loop_recycle()
             return result
         else:
-            raise
+            raise ValueError('length of graph is 0')
 
     def loop_recycle(self, visited=None, vertex=None, goal=None):
         '''
@@ -420,7 +420,7 @@ class Graph:
                 pass
             # revisit function!!
             else:
-                return self.eulerian_traversal(visited, neighbor, goal)
+                return self.loop_recycle(visited, neighbor, goal)
         # the loop finished. must have been a bad lead!
         else:
             return False
