@@ -34,6 +34,6 @@ if __name__ == '__main__':
 
     # there was a problem!
     else:
-        raise ValueError()
+        raise ValueError(f'Too many arguments! {sys.argv}')
 
     print(output)

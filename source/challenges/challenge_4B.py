@@ -84,7 +84,7 @@ def prep_order(selected_size, original_menu):
         # this code works but is pretty ugly.
         # without it, larger items must reference smaller items.
         # for example, if a size 6 was great because it was
-        # made up of  three twos, it now adds three twos
+        # made up of three twos, it now adds three twos
         # instead of one six with this code.
         best_sizes = {}
         for good_size in best_combo:
@@ -136,7 +136,7 @@ if __name__ == '__main__':
         6:  3.49,
         7:  4.50,
         8:  5.25,
-        9:  4.00,
+        9:  5.30,
         10: 6.00,
         11: 7.00,
         12: 8.00,
