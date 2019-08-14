@@ -1,3 +1,7 @@
+### IMPORTANT NOTE: PLEASE READ THE WRITEUP AT
+### https://github.com/noltron000/graph-assignments/blob/master/source/challenges/README.md
+### writeup credit should be covered with this readme.
+
 def prepare_knapsack(items, capacity):
 	'''
 	"capacity" is a numeric value representing a max weight.

@@ -1,3 +1,7 @@
+### IMPORTANT NOTE: PLEASE READ THE WRITEUP AT
+### https://github.com/noltron000/graph-assignments/blob/master/source/challenges/README.md
+### writeup credit should be covered with this readme.
+
 import itertools
 
 def prep_order(selected_size, original_menu):
