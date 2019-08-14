@@ -1,19 +1,17 @@
 import itertools
 
 def prep_order(selected_size, original_menu):
-	###XXX###XXX###XXX###XXX###XXX###
-	def divide_sandwich(size, menu):
-		"""
-			Note:
-				this function was found in C++ on: https://www.techiedelight.com/rot-cutting/
-			Input:
-				an array of prices with indexes that correlate to the size of the pieces of wood.
-				an integer of the length of the wood to be cut.
+	def divide_sandwich(menu):
+		'''
+		input:
+		the size of the desired sub, and the menu
+			an array of prices with indexes that correlate to the size of the pieces of wood.
+		an integer of the length of the wood to be cut.
 			Output:
 				a string of the inputs and the resulting max cost that can be made from the length of the wood and the prices.
-		"""
-		# dont overwrite parameter for upstream functions.
-		menu = menu.copy()
+		== NOTE ==
+		this function was inspired by Jamie McCrory's code.
+		'''
 		# discover which menu items are still untouched.
 		unvisited = set(original_menu) - set(menu)
 		# always start with the lowest possible size.
@@ -24,7 +22,7 @@ def prep_order(selected_size, original_menu):
 			menu[key] = {
 				'price': original_menu[key]
 			}
-			return divide_sandwich(size, menu)
+			return divide_sandwich(menu)
 
 		# lets examine our given menu more closely.
 		# check every combination of two or less items.
@@ -53,34 +51,56 @@ def prep_order(selected_size, original_menu):
 			+ menu[best_combo[1]]['price']
 		)
 
+		# == FIXME ==
+		# this code works but is pretty ugly.
+		# without it, larger items must reference smaller items.
+		# for example, if a size 6 was great because it was
+		# made up of  three twos, it now adds three twos
+		# instead of one six with this code.
+		best_sizes = {}
+		for good_size in best_combo:
+			if menu.get(good_size, {}).get('sizes'):
+				for best_size in menu[good_size]['sizes']:
+					count = menu[good_size]['sizes'][best_size]
+					if best_size in best_sizes:
+						best_sizes[best_size] += count
+					else:
+						best_sizes[best_size] = count
+			elif best_sizes.get(good_size):
+				best_sizes[good_size] += 1
+			else:
+				best_sizes[good_size] = 1
+
 		# compare the original menu price
 		# with the best price from any combo.
-		if original_menu[key] > best_price:
+		if original_menu[key] >= best_price:
 			menu[key] = {
 				'price': best_price,
-				'sizes': best_combo,
+				'sizes': best_sizes,
 			}
 		else:
 			menu[key] = {
 				'price': original_menu[key]
 			}
 
-
 		# check if further recursion is needed.
-		if key == size:
+		if key == selected_size:
 			return menu
 		else:
-			return divide_sandwich(size, menu)
+			return divide_sandwich(menu)
 
-	###XXX###XXX###XXX###XXX###XXX###
-	return divide_sandwich(selected_size, {})
+	###############################
+	### RESUME TO MAIN FUNCTION ###
+	###############################
+
+	return divide_sandwich({})
 
 
 if __name__ == '__main__':
 	# create a dictionary of sub sizes with prices.
 	menu = {
 		1:  0.50,
-		2:  1.00, 
+		2:  0.99, 
 		3:  1.69,
 		4:  2.00,
 		5:  3.00,
@@ -88,10 +108,41 @@ if __name__ == '__main__':
 		7:  4.50,
 		8:  5.25,
 		9:  4.00,
-		# 10: 6.00, # this shop doesnt always sell this size.
+		10: 6.00,
 		11: 7.00,
 		12: 8.00,
+		13: 8.42,
+		14: 9.38,
+		15: 19.99,
+		16: 14.00,
 	}
-	size = 12
 
-	print(prep_order(size, menu))
+	size = input(
+		'enter a sandwich size between 16" and 1", inclusive...'
+		'\n(hint: you can hit just enter for 12")\n\t>>> '
+	)
+	try:
+		size = int(size)
+		if 0 > size or size > 16:
+			raise
+	except:
+		print('NOTE: sub size defaulted to 12')
+		size = 12
+
+	# grab the result!!!
+	result = prep_order(size, menu)[size]
+
+	# create some terminal text
+	terminal_text = '---\n' \
+	f'A {size}" sub normally costs ${menu[size]}.\n' \
+	f'However, if we purchase smaller subs to match ' \
+	'that size...then it could be so much lower!\n' \
+	'We can actually get the price down to ' \
+	f'${result["price"]} if we buy some smaller subs:\n'
+	# add some dynamics to the terminal text
+	for size in result['sizes']:
+		count = result['sizes'][size]
+		terminal_text += f'- {count} {size}" sub(s)\n'
+	f'{result["sizes"]}'
+	
+	print(terminal_text)
