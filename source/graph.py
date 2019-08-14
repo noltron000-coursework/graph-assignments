@@ -108,6 +108,9 @@ class Graph:
 		final_string = ''
 		# loop through all edges and clean them up
 		for edge in edge_list:
+			# stringifying integers and floats
+			edge = list(str(item) for item in edge)
+			# adding string information
 			edge_string = ','.join(edge)
 			final_string += '('
 			final_string += edge_string

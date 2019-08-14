@@ -1,0 +1,6 @@
+G
+A,B,C,D,E,F,G,H,I,J,K,L,M,N,X
+(A,B,3)
+(B,C,2)
+(A,C,5)
+(C,D,3)
