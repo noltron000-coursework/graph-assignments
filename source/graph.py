@@ -332,29 +332,46 @@ class Graph:
 		else:
 			return cliques
 
+	def eulerian_degree(self):
+		'''
+		this function simply ensures that every 
+		vertex has an even number of neighbors.
+		'''
+		# check every vertex in the graph.
+		for vertex in self.graph:
+			# see if it has an even # of edges.
+			if len(self.graph[vertex].edges) % 2 == 0:
+				pass
+			else:
+				# it is not eulerian if it doesnt.
+				return False
+		else:
+			# if the loop ends, it is eulerian.
+			return True
+
 	def eulerian_cycle(self):
 		# asdf
 		if len(self.graph) != 0:
-			result = self.eulerian_traversal()
+			result = self.eulerian_recycle()
 			return result
 		else:
 			raise
 
-	def eulerian_traversal(self, visited=None, vertex=None, goal=None):
+	def eulerian_recycle(self, visited=None, vertex=None, goal=None):
 		'''
-			This is a "Depth-First Search" algorithm.
-			Traverse this binary tree recursively, pre-order.
-			To do so, visit the given node.
-			Then, visit it's left & right children.
-			---
-			best & worst case runtime: O(n)
-			--> we must traverse every node to visit them all.
-			~~~
-			best & worst case memory usage: O(1)
-			--> there is hardly any memory usage - its really 
-			    contingent on whatever visit(node) does.
-			--> note that, being recursive, it could be O(ln(n))
-			    TODO ↑ this above statement is important, read into
+		This is a "Depth-First Search" algorithm.
+		Traverse this binary tree recursively, pre-order.
+		To do so, visit the given node.
+		Then, visit it's left & right children.
+		---
+		best & worst case runtime: O(n)
+		--> we must traverse every node to visit them all.
+		~~~
+		best & worst case memory usage: O(1)
+		--> there is hardly any memory usage - its really 
+				contingent on whatever visit(node) does.
+		--> note that, being recursive, it could be O(ln(n))
+				TODO ↑ this above statement is important, read into
 		'''
 		# the graph is a collection of vertices.
 		graph = self.graph

@@ -17,7 +17,7 @@ sys.path.insert(0, parentdir)
 from graph import Graph
 
 def main(Object):
-	boolean = str(Object.eulerian_cycle()).upper()
+	boolean = str(Object.eulerian_degree()).upper()
 	print(f'This graph is Eulerian: {boolean}')
 
 if __name__ == '__main__':
