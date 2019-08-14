@@ -28,4 +28,4 @@ if __name__ == '__main__':
 	else:
 		raise
 
-	print(graph.shortest_path_bfs(A,B))
+	print(graph.shortest_path_dfs(A,B))

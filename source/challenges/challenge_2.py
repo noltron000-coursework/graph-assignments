@@ -28,7 +28,7 @@ def main(graph, start, finish):
 	- the number of edges in that path.
 	'''
 	# grab variables for our summary.
-	shortest_path = graph.shortest_path_bfs(start, finish)
+	shortest_path = graph.shortest_path_dfs(start, finish)
 	# raise an error if the return is empty.
 	if shortest_path == []:
 		raise ValueError(

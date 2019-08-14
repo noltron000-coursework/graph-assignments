@@ -22,5 +22,9 @@ class GraphTest(unittest.TestCase):
 	def test_shortest_path(self):
 		graph = Graph('./source/data/network.txt')
 		short = graph.shortest_path_dfs('A','N')
-		print(short)
-		assert short == ['A', 'J', 'K', 'L' ,'M' ,'N']
+		assert len(short) == 6
+
+	def test_disconnected_path(self):
+		graph = Graph('./source/data/network.txt')
+		short = graph.shortest_path_dfs('A','X')
+		assert len(short) == 0
