@@ -1,15 +1,8 @@
-# -XXX-XXX-
-# NOTE: this code was pulled from Jamie McCrory's repo.
-# check it out here: https://github.com/jamiejamiebobamie/CS-2.2-Advanced-Recursion-and-Graphs/blob/master/challenges/challenge4/part2.py
-# -XXX-XXX-
+import itertools
 
-def driver_function(prices,n):
-	"""
-	The driver holds the lookup dictionary and makes the original function call to rodcut function.
-	"""
-	dict = {}
-
-	def rodcut(prices,n):
+def prep_order(selected_size, original_menu):
+	###XXX###XXX###XXX###XXX###XXX###
+	def divide_sandwich(size, menu):
 		"""
 			Note:
 				this function was found in C++ on: https://www.techiedelight.com/rot-cutting/
@@ -19,43 +12,69 @@ def driver_function(prices,n):
 			Output:
 				a string of the inputs and the resulting max cost that can be made from the length of the wood and the prices.
 		"""
-		# each time the function gets called initialize maxValue to be negative infinity
-		maxValue = float('-inf')
+		# dont overwrite parameter for upstream functions.
+		menu = menu.copy()
+		# discover which menu items are still untouched.
+		unvisited = set(original_menu) - set(menu)
+		# always start with the lowest possible size.
+		key = min(unvisited)
 
-		# return 0 if the input length of the rod is 0 or if the input length is greater than the array as that will throw list index out of range errors below
-		if n == 0 or len(prices) <= n:
-			return 0
+		# this implies the first run
+		if len(menu) == 0:
+			menu[key] = {
+				'price': original_menu[key]
+			}
+			return divide_sandwich(size, menu)
 
-		# generate numbers between 1 and the current rod_length + 1 (+1 because range() is non-inclusive at the upper bounds)
-		for _ in range(1, n+1):
+		# lets examine our given menu more closely.
+		# check every combination of two or less items.
+		# indeed, that includes combinations of a single item.
+		combos = set()
+		# add single items to combos
+		for item in menu:
+			# normally, a combination of one single item
+			# would be denoted by a single item in a list.
+			# our scripts require two items in a list.
+			combos.add((item, item))
+		# add double items to combos
+		combos |= set(itertools.combinations(menu, 2))
+		# now we need to filter our combos set.
+		# the sum of the pairs must equal our key!
+		for pair in list(combos):
+			if pair[0] + pair[1] != key:
+				combos.remove(pair)
 
-			# set 'entry' to a tuple of the current cut. a cut consists of two pieces.
-			# cut == piece A and piece B: A is: _ and piece B is: the length of the rod - piece A.
-			cut = (_, n-_)
+		# check up the best price out of the set.
+		best_combo = min(combos, key=lambda k: (
+			menu[k[0]]['price'] + menu[k[1]]['price']
+		))
+		best_price = (0
+			+ menu[best_combo[0]]['price']
+			+ menu[best_combo[1]]['price']
+		)
 
-			# memoization dictionary:
-			if cut in dict:
-				cost = dict[cut]
-			else:
-			# reference the price for piece A, taking into account the index of piece A will be: _-1
-			# need to determine the cost(s) of all pieces resulting from that cut.
-			# so piece B is fed into "the wood chipper": the rodCut function, to determine its cost(s)
-				cost = prices[_-1] + rodcut(prices, n - _)
-				dict[cut] = cost
+		# compare the original menu price
+		# with the best price from any combo.
+		if original_menu[key] > best_price:
+			menu[key] = {
+				'price': best_price,
+				'sizes': best_combo,
+			}
+		else:
+			menu[key] = {
+				'price': original_menu[key]
+			}
 
-			# if the resuting cost is greater than the local maxValue set the local maxValue to the cost
-			if (cost > maxValue):
-				maxValue = cost
 
-		# return the maxValue to the outside scope.
-		return maxValue
+		# check if further recursion is needed.
+		if key == size:
+			return menu
+		else:
+			return divide_sandwich(size, menu)
 
-	maxValue = rodcut(prices,n)
-	printable_prices = [str(price) for price in prices]
+	###XXX###XXX###XXX###XXX###XXX###
+	return divide_sandwich(selected_size, {})
 
-	return "For this input:\n\n"+ "prices: " + ", ".join(printable_prices) + "\nwood length: " + str(n) + "\n\nThe solution is:\n\n" + str(maxValue)
-
-			
 
 if __name__ == '__main__':
 	# create a dictionary of sub sizes with prices.
