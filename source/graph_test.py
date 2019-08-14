@@ -30,3 +30,11 @@ class GraphTest(unittest.TestCase):
         graph = Graph('./source/data/network.txt')
         short = graph.shortest_path_dfs('A', 'X')
         assert len(short) == 0
+
+    def test_isnt_eulerian_cycle(self):
+        graph = Graph('./source/data/network.txt')
+        assert not graph.eulerian_degree()
+    
+    def test_isnt_eulerian_cycle(self):
+        graph = Graph('./source/data/test_euler.txt')
+        assert graph.eulerian_degree()
